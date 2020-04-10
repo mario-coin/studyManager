@@ -6,3 +6,6 @@
 3.      > npm install
 4.      > node_modules/.bin/sequelize db:migrate
 4.      > npm run dev
+########################
+########################
+Material Design: https://material-ui.com/getting-started/templates/
