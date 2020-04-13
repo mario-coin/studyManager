@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
+import Button, { FormGroup, FormControl, ControlLabel } from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -12,19 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import Footer from '../../template/footer';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -47,7 +35,35 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Login() {
+  const [usuario, setUsuaruo] = useState("");
+  const [password, setPassword] = useState("");
   const classes = useStyles();
+
+  function validateForm() {
+    return usuario.length > 0 && password.length > 0;
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    alert('a');
+    
+    // const { email, password } = this.state;
+    // if (!email || !password) {
+    //   this.setState({ error: "Preencha e-mail e senha para continuar!" });
+    // } else {
+    //   try {
+    //     const response = await api.post("/sessions", { email, password });
+    //     login(response.data.token);
+    //     this.props.history.push("/app");
+    //   } catch (err) {
+    //     this.setState({
+    //       error:
+    //         "Houve um problema com o login, verifique suas credenciais. T.T"
+    //     });
+    //   }
+    // }
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -56,61 +72,29 @@ export default function Login() {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign In
+        <form className={classes.form} onSubmit={handleSubmit}>
+          <TextField variant="outlined" margin="normal" required fullWidth id="usuario" label="Usuario" name="usuario" autoComplete="usuario" autoFocus/>
+          <TextField variant="outlined" margin="normal" required fullWidth name="password" label="Senha" type="password" id="password" autoComplete="current-password"/>
+          <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Lembrar senha"/>
+          <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+            Entrar
           </Button>
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
-                Forgot password?
+                Esqueci minha senha
               </Link>
             </Grid>
             <Grid item>
               <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
+                {"Cadastre-se"}
               </Link>
             </Grid>
           </Grid>
         </form>
       </div>
       <Box mt={8}>
-        <Copyright />
+        <Footer />
       </Box>
     </Container>
   );

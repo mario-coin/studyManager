@@ -1,14 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Dashboard from './dashboard/dashboard';
-import Login from './login/login';
+import Dashboard from './pages/dashboard/dashboard';
+import Login from './pages/login/login';
+import Hello from './pages/hello/hello';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
     {/* <Dashboard /> */}
-    <Login />
+    {/* <Login /> */}
+    <Hello />
   </React.StrictMode>,
   document.getElementById('root')
 );
