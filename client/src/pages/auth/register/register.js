@@ -33,17 +33,17 @@ const styles = theme => ({
   });
 
 class Register extends React.Component {
-    constructor(props){
-        super(props);
-
+    constructor(props) {
+      super(props);
+      this.myChangeHandler = this.myChangeHandler.bind(this);
+      this.submit = this.submit.bind(this);
     }
-//   const classes = useStyles();
 
     myChangeHandler = (event) => {
         let nam = event.target.name;
         let val = event.target.value;
         this.setState({[nam]: val});
-        console.log(this.state);
+        // console.log(this.state);
     }
 
     async submit(event) {
@@ -54,10 +54,11 @@ class Register extends React.Component {
             console.log(response.data);
             this.props.history.push("/login");
         } catch (err) {
-            this.setState({
-                error:
-                "Houve um problema com o login, verifique suas credenciais. T.T"
-            });
+            // this.setState({
+            //     error:
+            //     "Houve um problema com o login, verifique suas credenciais. T.T"
+            // });
+            console.log(err);
         }
 
         // if (!email || !password) {
@@ -95,7 +96,7 @@ class Register extends React.Component {
                     <TextField variant="outlined" required fullWidth id="email" label="Email" name="email" autoComplete="email" onChange={this.myChangeHandler}/>
                     </Grid>
                     <Grid item xs={12}>
-                    <TextField variant="outlined" required fullWidth id="user" label="Usuário" name="user" autoComplete="user" onChange={this.myChangeHandler}/>
+                    <TextField variant="outlined" required fullWidth id="username" label="Usuário" name="username" autoComplete="username" onChange={this.myChangeHandler}/>
                     </Grid>
                     <Grid item xs={12}>
                     <TextField variant="outlined" required fullWidth name="password" label="Senha" type="password" id="password" autoComplete="current-password" onChange={this.myChangeHandler}/>
@@ -106,7 +107,7 @@ class Register extends React.Component {
                 </Button>
                 <Grid container justify="flex-end">
                     <Grid item>
-                    <Link href="#" variant="body2">
+                    <Link href="/login" variant="body2">
                         Já possui uma conta? Entrar
                     </Link>
                     </Grid>

@@ -1,29 +1,31 @@
 import axios from "axios";
-import { getToken } from "./auth";
 
 const api = axios.create({
-  baseURL: "http://127.0.0.1:3333",
+  baseURL: "http://localhost:5000",
   token_key: ""
 });
 
-api.isAuthenticated = () => localStorage.getItem(token_key) !== null;
+axios.defaults.headers.post['Content-Type'] ='application/json;charset=utf-8';
+axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
-api.getToken = () => localStorage.getItem(token_key);
+// api.isAuthenticated = () => localStorage.getItem(this.token_key) !== null;
 
-api.login = token => {
-  localStorage.setItem(token_key, token);
-};
+// api.getToken = () => { localStorage.getItem(this.token_key) };
 
-api.logout = () => {
-  localStorage.removeItem(token_key);
-};
+// api.login = token => {
+//   localStorage.setItem(this.token_key, token);
+// };
 
-api.interceptors.request.use(async config => {
-  const token = getToken();
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+// api.logout = () => {
+//   localStorage.removeItem(this.token_key);
+// };
+
+// api.interceptors.request.use(async config => {
+//   const token = this.getToken();
+//   if (token) {
+//     config.headers.Authorization = `Bearer ${token}`;
+//   }
+//   return config;
+// });
 
 export default api;

@@ -1,20 +1,23 @@
 const router = require("express").Router();
-const mongoose = require("mongoose");
 const authMiddleware = require("../middlewares/auth");
 
-const User = mongoose.model("User");
+const { User } = require('../../database/models');
 
 router.post("/register", async (req, res) => {
-  const { email, username } = req.body;
+  const { name, email, username, password } = req.body;
 
   try {
-    if (await User.findOne({ email })) {
-      return res.status(400).json({ error: "User already exists" });
-    }
+    // console.log('########################################################');
+    // console.log('----------------------------------->', req.body);
+    
+    await User.count({ where: {username: username }})
+      .then(async c => {
+        if(c == 0){
+          user = await User.create(req.body);
+        }
+      });
 
-    const user = await User.create(req.body);
-
-    return res.json({ user });
+    // return res.json({ success: true });
   } catch (err) {
     return res.status(400).json({ error: "User registration failed" });
   }
@@ -22,9 +25,9 @@ router.post("/register", async (req, res) => {
 
 router.post("/authenticate", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ username });
 
     if (!user) {
       return res.status(400).json({ error: "User not found" });
@@ -45,11 +48,21 @@ router.post("/authenticate", async (req, res) => {
 
 router.use(authMiddleware);
 
-router.get("/me", async (req, res) => {
+router.get("/getAll", async (req, res) => {
   try {
-    const { userId } = req;
+    const users = await User.findAll();
 
-    const user = await User.findById(userId);
+    return res.json({ users });
+  } catch (err) {
+    return res.status(400).json({ error: "Can't get user information" });
+  }
+});
+
+router.get("/get", async (req, res) => {
+  try {
+    const { id } = req;
+
+    const user = await User.findById(id);
 
     return res.json({ user });
   } catch (err) {

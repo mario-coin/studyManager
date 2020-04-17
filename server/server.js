@@ -1,13 +1,18 @@
 const express = require('express');
+var cors = require('cors')
 const bodyParser = require("body-parser");
 
-// const { User } = require('../client/models');
+// const { User } = require('../database/models');
 
 const app = express();
-const port = process.env.PORT || 5000;
 
-// Carrega o model de Usuário
-// require("./api/user");
+app.use(
+    cors({
+        origin: 'http://localhost:3000',
+        optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+    })
+);
+const port = process.env.PORT || 5000;
 
 // app.get('/api/mensagem', (req, res) => {
 //   // User.create({ name: 'Mario Coin', email: 'marioquercafe@gmail.com', password: '123456' });
@@ -17,7 +22,7 @@ const port = process.env.PORT || 5000;
 app.use(bodyParser.json());
 
 // Rotas da API
-// app.use("/api/user", require("./controllers/userController"));
+app.use("/api/user", require("./controllers/userController"));
 app.use("/api/mensagem", require("./controllers/mensagemController"));
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
