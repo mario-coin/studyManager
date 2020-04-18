@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -12,7 +15,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Footer from '../../../template/footer';
-import { render } from 'react-dom';
+import api from '../../../services/api';
+import { login } from "../../../services/auth";
+
+import { withRouter} from 'react-router-dom';
 
 const styles = theme => ({
   paper: {
@@ -35,32 +41,55 @@ const styles = theme => ({
 });
 
 class Login extends React.Component {
-  handleSubmit(event) {
-    event.preventDefault();
+  constructor(props) {
+      super(props);
+      this.myChangeHandler = this.myChangeHandler.bind(this);
+      this.submit = this.submit.bind(this);
+      this.handleClose = this.handleClose.bind(this);
 
-    alert('a');
-    
-    // const { email, password } = this.state;
-    // if (!email || !password) {
-    //   this.setState({ error: "Preencha e-mail e senha para continuar!" });
-    // } else {
-    //   try {
-    //     const response = await api.post("/sessions", { email, password });
-    //     login(response.data.token);
-    //     this.props.history.push("/app");
-    //   } catch (err) {
-    //     this.setState({
-    //       error:
-    //         "Houve um problema com o login, verifique suas credenciais. T.T"
-    //     });
-    //   }
-    // }
+      this.state = {
+          login: {
+              username: '',
+              password: ''
+          },
+          snackbarMessage: ''
+      };
   }
+
+  myChangeHandler = (event) => {
+      let nam = event.target.name;
+      let val = event.target.value;
+
+      let login = this.state.login;
+      login[nam] = val;
+      this.setState({'login': login});
+  }
+
+  async submit(event) {
+    event.preventDefault();
+    
+    api.post("/api/user/login", this.state.login)
+    .then(
+      (response) => {
+        login(response.data);
+        this.props.history.push("/");
+      },
+      (error) => {
+        this.setState({'snackbarMessage': error.response.data });
+      }
+    );
+  }
+  
+  handleClose = (event, reason) => {
+      if (reason === 'clickaway') {
+          return;
+      }
+
+      this.setState({'snackbarMessage': '' });
+  };
 
   render(){
     const { classes } = this.props;
-    // const [usuario, setUsuaruo] = useState("");
-    // const [password, setPassword] = useState("");
 
     return (
       <Container component="main" maxWidth="xs">
@@ -69,16 +98,30 @@ class Login extends React.Component {
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
-          <form className={classes.form} onSubmit={this.handleSubmit}>
-            <TextField variant="outlined" margin="normal" required fullWidth id="usuario" label="Usuario" name="usuario" autoComplete="usuario" autoFocus/>
-            <TextField variant="outlined" margin="normal" required fullWidth name="password" label="Senha" type="password" id="password" autoComplete="current-password"/>
+          <form className={classes.form} onSubmit={this.submit}>
+            <TextField variant="outlined" margin="normal" required fullWidth id="username" label="Usuario" name="username" autoComplete="username" autoFocus onChange={this.myChangeHandler}/>
+            <TextField variant="outlined" margin="normal" required fullWidth name="password" label="Senha" type="password" id="password" autoComplete="password" onChange={this.myChangeHandler}/>
             <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Lembrar senha"/>
             <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
               Entrar
             </Button>
+            <Snackbar
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                open={this.state.snackbarMessage.length > 0}
+                autoHideDuration={5000}
+                onClose={this.handleClose}
+                message={this.state.snackbarMessage}
+                action={
+                    <React.Fragment>
+                        <IconButton size="small" aria-label="close" color="inherit" onClick={this.handleClose}>
+                        <CloseIcon fontSize="small" />
+                        </IconButton>
+                    </React.Fragment>
+                }
+            />
             <Grid container>
               <Grid item xs>
-                <Link href="forgot" variant="body2">
+                <Link href="/forgot" variant="body2">
                   Esqueci minha senha
                 </Link>
               </Grid>
@@ -98,4 +141,4 @@ class Login extends React.Component {
   }
 }
 
-export default withStyles(styles)(Login);
+export default withStyles(styles)(withRouter(Login));

@@ -1,6 +1,10 @@
 import React from 'react';
+import { withRouter} from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
@@ -34,48 +38,52 @@ const styles = theme => ({
 
 class Register extends React.Component {
     constructor(props) {
-      super(props);
-      this.myChangeHandler = this.myChangeHandler.bind(this);
-      this.submit = this.submit.bind(this);
+        super(props);
+        this.myChangeHandler = this.myChangeHandler.bind(this);
+        this.submit = this.submit.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+
+        this.state = {
+            user: {
+                name: '',
+                email: '',
+                username: '',
+                password: ''
+            },
+            snackbarMessage: ''
+        };
     }
 
     myChangeHandler = (event) => {
         let nam = event.target.name;
         let val = event.target.value;
-        this.setState({[nam]: val});
-        // console.log(this.state);
+
+        let user = this.state.user;
+        user[nam] = val;
+        this.setState({'user': user});
     }
 
     async submit(event) {
         event.preventDefault();
         
-        try {
-            const response = await api.post("/api/user/register", this.state);
-            console.log(response.data);
-            this.props.history.push("/login");
-        } catch (err) {
-            // this.setState({
-            //     error:
-            //     "Houve um problema com o login, verifique suas credenciais. T.T"
-            // });
-            console.log(err);
+        api.post("/api/user/register", this.state.user)
+        .then(
+            (response) => {
+                this.props.history.push("/login");
+            },
+            (error) => {
+                this.setState({'snackbarMessage': error.response.data });
+            }
+        );
+    }
+    
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
         }
 
-        // if (!email || !password) {
-        //   this.setState({ error: "Preencha e-mail e senha para continuar!" });
-        // } else {
-        //   try {
-        //     const response = await api.post("/sessions", { email, password });
-        //     login(response.data.token);
-        //     this.props.history.push("/app");
-        //   } catch (err) {
-        //     this.setState({
-        //       error:
-        //         "Houve um problema com o login, verifique suas credenciais. T.T"
-        //     });
-        //   }
-        // }
-    }
+        this.setState({'snackbarMessage': '' });
+    };
 
     render(){
         const { classes } = this.props;
@@ -105,6 +113,20 @@ class Register extends React.Component {
                 <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit} >
                     Cadastrar
                 </Button>
+                <Snackbar
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                    open={this.state.snackbarMessage.length > 0}
+                    autoHideDuration={5000}
+                    onClose={this.handleClose}
+                    message={this.state.snackbarMessage}
+                    action={
+                        <React.Fragment>
+                            <IconButton size="small" aria-label="close" color="inherit" onClick={this.handleClose}>
+                            <CloseIcon fontSize="small" />
+                            </IconButton>
+                        </React.Fragment>
+                    }
+                />
                 <Grid container justify="flex-end">
                     <Grid item>
                     <Link href="/login" variant="body2">
@@ -122,4 +144,4 @@ class Register extends React.Component {
     }
 }
 
-export default withStyles(styles)(Register);
+export default withStyles(styles)(withRouter(Register));
