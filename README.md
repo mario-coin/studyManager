@@ -9,8 +9,10 @@
 6.      > npm install --save-dev sequelize-cli
 7.      > npx sequelize-cli db:migrate
 8.      > npm install
-9.      > node_modules/.bin/sequelize db:migrate
-10.     > npm run dev
+9.      > cd client
+10.     > npm install
+11.     > cd ..
+12.     > npm run dev
 ########################
 ########################
 
