@@ -1,13 +1,16 @@
 ########################
 ####para rodar o app####
 ########################
-1.      instalar node: https://nodejs.org/en/download/
-2.      abrir terminal
-3.      > npm install --save-dev sequelize-cli
-4.      > npx sequelize-cli db:migrate
-5.      > npm install
-6.      > node_modules/.bin/sequelize db:migrate
-7.      > npm run dev
+1.      instalar mysql
+2.      validar usuário como sendo root, e sem senha
+3.      criar banco study_manager
+4.      instalar node: https://nodejs.org/en/download/
+5.      abrir terminal
+6.      > npm install --save-dev sequelize-cli
+7.      > npx sequelize-cli db:migrate
+8.      > npm install
+9.      > node_modules/.bin/sequelize db:migrate
+10.     > npm run dev
 ########################
 ########################
 
