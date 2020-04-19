@@ -12,4 +12,5 @@
 ########################
 
 Material Design:    https://material-ui.com/getting-started/templates/
+Icons:              https://material.io/resources/icons/?style=baseline
 ORM:                https://sequelize.org/v5/manual/getting-started.html

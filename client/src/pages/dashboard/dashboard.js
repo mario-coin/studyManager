@@ -1,100 +1,20 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
-import Box from '@material-ui/core/Box';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
+import { fade, withStyles } from '@material-ui/core/styles';
+import Header from '../../template/header';
+import Chat from '@material-ui/icons/Chat';
+import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
-import Container from '@material-ui/core/Container';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
-import Chart from './chart';
-import Deposits from './deposits';
-import Orders from './orders';
+import Footer from '../../template/footer'
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-const drawerWidth = 240;
-
-const useStyles = makeStyles((theme) => ({
+const styles = (theme) => ({
   root: {
     display: 'flex',
-  },
-  toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
-  },
-  toolbarIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: 36,
-  },
-  menuButtonHidden: {
-    display: 'none',
-  },
-  title: {
-    flexGrow: 1,
-  },
-  drawerPaper: {
-    position: 'relative',
-    whiteSpace: 'nowrap',
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerPaperClose: {
-    overflowX: 'hidden',
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    width: theme.spacing(7),
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9),
-    },
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
@@ -102,145 +22,132 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
     overflow: 'auto',
   },
-  container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-  },
   paper: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(1),
+    margin: theme.spacing(1),
     display: 'flex',
     overflow: 'auto',
     flexDirection: 'column',
   },
-  fixedHeight: {
-    height: 240,
+  table: {
+    width: '100%',
+    minWidth: 650,
   },
-}));
+  tableRow: {
+    verticalAlign: 'top'
+  },
+  tableCell: {
+    width: '33%'
+  },
+  card: {
+    width: 250,
+    margin: theme.spacing(1),
+    float: 'left'
+  }
+});
 
-export default function Dashboard() {
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+class Dashboard extends React.Component {
+  constructor(props) {
+      super(props);
+      this.defaultCard = this.defaultCard.bind(this);
 
-  return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
-        <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            Dashboard
+      this.state = {
+          open: false
+      };
+  }
+  
+  defaultCard(){
+    const { classes } = this.props;
+    const bull = <span className={classes.bullet}>•</span>;
+
+    return(
+      <Card className={classes.card}>
+        <CardContent>
+          <Typography className={classes.title} color="textSecondary" gutterBottom>
+            Word of the Day
           </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-        }}
-        open={open}
-      >
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <Divider />
-        <List>{mainListItems}</List>
-        <Divider />
-        <List>{secondaryListItems}</List>
-      </Drawer>
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper className={fixedHeightPaper}>
-                <Chart />
-              </Paper>
-            </Grid>
-            {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <Deposits />
-              </Paper>
-            </Grid>
-            {/* Recent Orders */}
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Orders />
-              </Paper>
+          <Typography variant="h5" component="h2">
+            be{bull}nev{bull}o{bull}lent
+          </Typography>
+          <Typography className={classes.pos} color="textSecondary">
+            adjective
+          </Typography>
+          <Typography variant="body2" component="p">
+            well meaning and kindly.
+            <br />
+            {'"a benevolent smile"'}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <Button size="small">Learn More</Button>
+        </CardActions>
+      </Card>
+    );
+  }
+  
+  render(){
+    const { classes } = this.props;
+  
+    return (
+      <div className={classes.root}>
+        <Header />
+
+        <main className={classes.content}>
+          <div className={classes.appBarSpacer} />
+          
+          <Grid container justify="center" className={classes.root}>
+            <Grid container justify="center">
+              <Grid item xs={4}>
+                <Grid container justify="center">
+                  <Grid item xs={12}>
+                    <Paper align="center" className={classes.paper}>Pendente</Paper>
+                  </Grid>
+                  <Grid item>
+                    {this.defaultCard()}
+                    {this.defaultCard()}
+                    {this.defaultCard()}
+                    {this.defaultCard()}
+                    {this.defaultCard()}
+                  </Grid>
+                </Grid>
+              </Grid>
+              {/* <Grid item xs={1}>
+                <Divider orientation="vertical" flexItem />
+              </Grid> */}
+              <Grid item xs={4}>
+                <Grid container justify="center">
+                  <Grid item xs={12}>
+                    <Paper align="center" className={classes.paper}>Desenvolvendo</Paper>
+                  </Grid>
+                  <Grid item>
+                    {this.defaultCard()}
+                  </Grid>
+                </Grid>
+              </Grid>
+              {/* <Grid item xs={1}>
+                <Divider orientation="vertical" flexItem />
+              </Grid> */}
+              <Grid item xs={4}>
+                <Grid container justify="center">
+                  <Grid item xs={12}>
+                    <Paper align="center" className={classes.paper}>Concluído</Paper>
+                  </Grid>
+                  <Grid item>
+                    {this.defaultCard()}
+                    {this.defaultCard()}
+                    {this.defaultCard()}
+                    {this.defaultCard()}
+                  </Grid>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
-          <Box pt={4}>
-            <Copyright />
-          </Box>
-        </Container>
-      </main>
-    </div>
-  );
+          
+          <Footer />
+        </main>
+      </div>
+    );
+  }
 }
 
-
-// import React, {Component} from 'react';
-// import Button from '@material-ui/core/Button';
-// import logo from './logo.svg';
-
-// import './App.css';
-
-// class App extends Component {
-//   state = {
-//     response: ''
-//   };
-
-//   componentDidMount() {
-//     this.callApi()
-//       .then(res => this.setState({ response: res.express }))
-//       .catch(err => console.log(err));
-//   }
-
-//   callApi = async () => {
-//     const response = await fetch('/api/mensagem');
-//     const body = await response.json();
-//     if (response.status !== 200) throw Error(body.message);
-
-//     return body;
-//   };
-
-//   render() {
-//     return (
-//       <div className="App">
-//         <header className="App-header">
-//           <img src={logo} className="App-logo" alt="logo" />
-//           <h1 className="App-title">Welcome to React</h1>
-//         </header>
-//         <Button variant="contained" color="primary">
-//           Hello World
-//         </Button>
-//         <p className="App-intro">{this.state.response}</p>
-//       </div>
-//     );
-//   }
-// }
-
-// export default App;
+export default withStyles(styles)(Dashboard);
