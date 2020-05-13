@@ -111,9 +111,6 @@ class Dashboard extends React.Component {
                   </Grid>
                 </Grid>
               </Grid>
-              {/* <Grid item xs={1}>
-                <Divider orientation="vertical" flexItem />
-              </Grid> */}
               <Grid item xs={4}>
                 <Grid container justify="center">
                   <Grid item xs={12}>
@@ -124,9 +121,6 @@ class Dashboard extends React.Component {
                   </Grid>
                 </Grid>
               </Grid>
-              {/* <Grid item xs={1}>
-                <Divider orientation="vertical" flexItem />
-              </Grid> */}
               <Grid item xs={4}>
                 <Grid container justify="center">
                   <Grid item xs={12}>

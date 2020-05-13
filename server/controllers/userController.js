@@ -10,17 +10,15 @@ router.post("/register", async (req, res) => {
     // console.log('########################################################');
     // console.log('----------------------------------->', req.body);
     
-    await User.count({ where: {username: username }})
-      .then(async c => {
-        if(c == 0){
-          user = await User.create(req.body);
-        }
-        else{
-          return res.status(400).json("User already exists");
-        }
-      });
-
-      return res.status(200).json();
+    let count = await User.count({ where: {username: username }});
+    if(count == 0){
+      user = await User.create(req.body);
+    }
+    else{
+      return res.status(400).json("User already exists");
+    }
+    
+    return res.status(200).json();
   } catch (err) {
     return res.status(400).json("User registration failed");
   }

@@ -4,6 +4,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import GroupIcon from '@material-ui/icons/Group';
 import Cloud from '@material-ui/icons/Cloud';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import Extension from '@material-ui/icons/Extension';
@@ -79,5 +80,19 @@ export const secondaryListItems = (
       </ListItemIcon>
       <ListItemText primary="Chat 3" />
     </ListItem>
+  </div>
+);
+
+export const adminListItems = (
+  <div>
+    <ListSubheader inset>Administração</ListSubheader>
+    <Link href="/user">
+      <ListItem button>
+        <ListItemIcon>
+          <GroupIcon />
+        </ListItemIcon>
+        <ListItemText primary="Usuários" />
+      </ListItem>
+    </Link>
   </div>
 );
