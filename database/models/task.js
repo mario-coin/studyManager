@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const task = sequelize.define('task', {
+  const Task = sequelize.define('Task', {
     name: DataTypes.STRING,
     description: DataTypes.STRING,
     start_date: DataTypes.DATE,
@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
     duration: DataTypes.INTEGER,
     type: DataTypes.ENUM('prova', 'trabalho', 'atividade')
   }, {});
-  task.associate = function(models) {
+  Task.associate = function(models) {
     // associations can be defined here
   };
-  return task;
+  return Task;
 };

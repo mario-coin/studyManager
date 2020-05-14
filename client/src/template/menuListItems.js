@@ -7,6 +7,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import GroupIcon from '@material-ui/icons/Group';
 import Cloud from '@material-ui/icons/Cloud';
 import BarChartIcon from '@material-ui/icons/BarChart';
+import ListIcon from '@material-ui/icons/List';
 import Extension from '@material-ui/icons/Extension';
 import Send from '@material-ui/icons/Send';
 import CalendarToday from '@material-ui/icons/CalendarToday';
@@ -21,6 +22,16 @@ export const mainListItems = (
         </ListItemIcon>
         <ListItemText>
           Kanban
+        </ListItemText>
+      </ListItem>
+    </Link>
+    <Link href="/task">
+      <ListItem button>
+        <ListItemIcon>
+          <ListIcon />
+        </ListItemIcon>
+        <ListItemText>
+          Tarefas
         </ListItemText>
       </ListItem>
     </Link>

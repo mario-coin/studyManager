@@ -15,6 +15,7 @@ const port = process.env.PORT || 5000;
 app.use(bodyParser.json());
 
 // Rotas da API
+app.use("/api/task", require("./controllers/taskController"));
 app.use("/api/user", require("./controllers/userController"));
 app.use("/api/mensagem", require("./controllers/mensagemController"));
 
