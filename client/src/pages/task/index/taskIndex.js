@@ -10,12 +10,14 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Link from '@material-ui/core/Link';
 import AddIcon from '@material-ui/icons/Add';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import { useTable } from 'react-table';
 
 import api from '../../../services/api';
 
@@ -57,7 +59,6 @@ class TaskIndex extends React.Component {
   constructor(props) {
       super(props);
 
-      this.fetchData = this.fetchData.bind(this);
       this.handleClose = this.handleClose.bind(this);
       
       this.state = {
@@ -66,11 +67,11 @@ class TaskIndex extends React.Component {
     };
   }
 
-  fetchData() {
+  componentDidMount() {
     api.get("/api/task/get")
     .then(
       (response) => {
-        this.setState({'tasks': response });
+        this.setState({'tasks': response.data });
       },
       (error) => {
         this.setState({'snackbarMessage': error.response.data });
@@ -89,8 +90,6 @@ class TaskIndex extends React.Component {
   render(){
     const { classes } = this.props;
     
-    this.fetchData();
-  
     return (
       <div className={classes.root}>
         <Header />
@@ -111,13 +110,13 @@ class TaskIndex extends React.Component {
                     <Table className={classes.table} aria-label="simple table">
                       <TableHead>
                         <TableRow>
-                          <TableCell align="right">Nome</TableCell>
-                          <TableCell align="right">Data início</TableCell>
-                          <TableCell align="right">Prazo</TableCell>
-                          <TableCell align="right">Complexidade</TableCell>
-                          <TableCell align="right">Duração</TableCell>
-                          <TableCell align="right">Tipo</TableCell>
-                          <TableCell align="right">
+                          <TableCell align="center">Nome</TableCell>
+                          <TableCell align="center">Data início</TableCell>
+                          <TableCell align="center">Prazo</TableCell>
+                          <TableCell align="center">Complexidade</TableCell>
+                          <TableCell align="center">Duração</TableCell>
+                          <TableCell align="center">Tipo</TableCell>
+                          <TableCell align="center">
                             <Link align="right" href="/task/create">
                               <AddIcon />
                             </Link>
@@ -127,14 +126,20 @@ class TaskIndex extends React.Component {
                       <TableBody>
                         {this.state.tasks.map((row) => (
                           <TableRow key={row.name}>
-                            <TableCell component="th" scope="row">
-                              {row.name}
+                            <TableCell component="th" scope="row" align="center">{row.name}</TableCell>
+                            <TableCell align="center">{row.start_date}</TableCell>
+                            <TableCell align="center">{row.deadline}</TableCell>
+                            <TableCell align="center">{row.complexity}</TableCell>
+                            <TableCell align="center">{row.duration}</TableCell>
+                            <TableCell align="center">{row.type}</TableCell>
+                            <TableCell align="center">
+                              <Link align="right" href="/task/edit">
+                                <EditIcon />
+                              </Link>
+                              <Link align="right" href="/task/delete">
+                                <DeleteIcon />
+                              </Link>
                             </TableCell>
-                            <TableCell align="right">{row.start_date}</TableCell>
-                            <TableCell align="right">{row.deadline}</TableCell>
-                            <TableCell align="right">{row.complexity}</TableCell>
-                            <TableCell align="right">{row.duration}</TableCell>
-                            <TableCell align="right">{row.type}</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
