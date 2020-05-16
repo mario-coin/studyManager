@@ -39,7 +39,7 @@ const styles = theme => ({
 class Register extends React.Component {
     constructor(props) {
         super(props);
-        this.myChangeHandler = this.myChangeHandler.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.submit = this.submit.bind(this);
         this.handleClose = this.handleClose.bind(this);
 
@@ -54,7 +54,7 @@ class Register extends React.Component {
         };
     }
 
-    myChangeHandler = (event) => {
+    handleChange = (event) => {
         let nam = event.target.name;
         let val = event.target.value;
 
@@ -98,16 +98,16 @@ class Register extends React.Component {
                 <form className={classes.form} onSubmit={this.submit}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                    <TextField autoComplete="name" name="name" variant="outlined" required fullWidth id="name" label="Nome" autoFocus onChange={this.myChangeHandler}/>
+                    <TextField autoComplete="name" name="name" variant="outlined" required fullWidth id="name" label="Nome" autoFocus onChange={this.handleChange}/>
                     </Grid>
                     <Grid item xs={12}>
-                    <TextField variant="outlined" required fullWidth id="email" label="Email" name="email" autoComplete="email" onChange={this.myChangeHandler}/>
+                    <TextField variant="outlined" required fullWidth id="email" label="Email" name="email" autoComplete="email" onChange={this.handleChange}/>
                     </Grid>
                     <Grid item xs={12}>
-                    <TextField variant="outlined" required fullWidth id="username" label="Usuário" name="username" autoComplete="username" onChange={this.myChangeHandler}/>
+                    <TextField variant="outlined" required fullWidth id="username" label="Usuário" name="username" autoComplete="username" onChange={this.handleChange}/>
                     </Grid>
                     <Grid item xs={12}>
-                    <TextField variant="outlined" required fullWidth name="password" label="Senha" type="password" id="password" autoComplete="current-password" onChange={this.myChangeHandler}/>
+                    <TextField variant="outlined" required fullWidth name="password" label="Senha" type="password" id="password" autoComplete="current-password" onChange={this.handleChange}/>
                     </Grid>
                 </Grid>
                 <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit} >

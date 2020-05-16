@@ -58,7 +58,7 @@ class TaskCreate extends React.Component {
   constructor(props) {
       super(props);
       this.submit = this.submit.bind(this);
-      this.myChangeHandler = this.myChangeHandler.bind(this);
+      this.handleChange = this.handleChange.bind(this);
       this.handleClose = this.handleClose.bind(this);
 
       this.state = {
@@ -89,7 +89,7 @@ class TaskCreate extends React.Component {
       );
   }
 
-  myChangeHandler = (event) => {
+  handleChange = (event) => {
       let nam = event.target.name;
       let val = event.target.value;
 
@@ -133,7 +133,7 @@ class TaskCreate extends React.Component {
                   id="name"
                   label="Nome"
                   autoFocus
-                  onChange={this.myChangeHandler}/>
+                  onChange={this.handleChange}/>
                 </Grid>
                 <Grid item xs={6}>
                 <TextField 
@@ -145,7 +145,7 @@ class TaskCreate extends React.Component {
                   id="description"
                   label="Descrição"
                   autoFocus
-                  onChange={this.myChangeHandler}/>
+                  onChange={this.handleChange}/>
                 </Grid>
                 <Grid item xs={6}>
                 <TextField 
@@ -158,7 +158,7 @@ class TaskCreate extends React.Component {
                   id="start_date"
                   label="Data Inicio"
                   autoFocus
-                  onChange={this.myChangeHandler}
+                  onChange={this.handleChange}
                   InputLabelProps={{ shrink: true}}/>
                 </Grid>
                 <Grid item xs={6}>
@@ -172,7 +172,7 @@ class TaskCreate extends React.Component {
                   id="deadline"
                   label="Deadline"
                   autoFocus
-                  onChange={this.myChangeHandler}
+                  onChange={this.handleChange}
                   InputLabelProps={{ shrink: true}}/>
                 </Grid>
                 <Grid item xs={6}>
@@ -182,7 +182,7 @@ class TaskCreate extends React.Component {
                   required
                   fullWidth
                   id="complexity"
-                  autoFocus onChange={this.myChangeHandler}
+                  autoFocus onChange={this.handleChange}
                 >
                     <MenuItem value={'facil'}>Fácil</MenuItem>
                     <MenuItem value={'mediano'}>Mediano</MenuItem>
@@ -199,7 +199,7 @@ class TaskCreate extends React.Component {
                   id="duration"
                   label="Duração"
                   autoFocus
-                  onChange={this.myChangeHandler}/>
+                  onChange={this.handleChange}/>
                 </Grid>
                 <Grid item xs={6}>
                 <Select
@@ -208,7 +208,7 @@ class TaskCreate extends React.Component {
                   required
                   fullWidth
                   id="type"
-                  autoFocus onChange={this.myChangeHandler}
+                  autoFocus onChange={this.handleChange}
                 >
                     <MenuItem value={'atividade'}>Atividade</MenuItem>
                     <MenuItem value={'trabalho'}>Trabalho</MenuItem>

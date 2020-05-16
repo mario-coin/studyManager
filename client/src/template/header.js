@@ -148,7 +148,7 @@ class Header extends React.Component{
               <MenuIcon />
             </IconButton>
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-              Tarefas
+              Study Manager
             </Typography>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
