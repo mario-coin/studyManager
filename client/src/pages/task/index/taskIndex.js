@@ -7,6 +7,7 @@ import Footer from '../../../template/footer'
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
@@ -17,7 +18,6 @@ import AddIcon from '@material-ui/icons/Add';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import { useTable } from 'react-table';
 
 import api from '../../../services/api';
 
@@ -60,9 +60,12 @@ class TaskIndex extends React.Component {
       super(props);
 
       this.handleClose = this.handleClose.bind(this);
+      this.handleRequestSort = this.handleRequestSort.bind(this);
       
       this.state = {
         tasks: [],
+        order: 'desc',
+        orderBy: 'name',
         snackbarMessage: ''
     };
   }
@@ -79,6 +82,12 @@ class TaskIndex extends React.Component {
     );
   }
 
+  handleRequestSort = (property) => (event) => {
+    const isAsc = this.state.orderBy === property && this.state.order === 'asc';
+    this.setState({'order': isAsc ? 'desc' : 'asc' });
+    this.setState({'orderBy': property });
+  };
+  
   handleClose = (event, reason) => {
     if (reason === 'clickaway') {
         return;
@@ -89,6 +98,14 @@ class TaskIndex extends React.Component {
 
   render(){
     const { classes } = this.props;
+    const headCells = [
+      { id: 'name', label: 'Nome' },
+      { id: 'start_date', label: 'Data início' },
+      { id: 'deadline', label: 'Prazo' },
+      { id: 'complexity', label: 'Complexidade' },
+      { id: 'duration', label: 'Duração' },
+      { id: 'type', label: 'Tipo' },
+    ];
     
     return (
       <div className={classes.root}>
@@ -110,12 +127,13 @@ class TaskIndex extends React.Component {
                     <Table className={classes.table} aria-label="simple table">
                       <TableHead>
                         <TableRow>
-                          <TableCell align="center">Nome</TableCell>
-                          <TableCell align="center">Data início</TableCell>
-                          <TableCell align="center">Prazo</TableCell>
-                          <TableCell align="center">Complexidade</TableCell>
-                          <TableCell align="center">Duração</TableCell>
-                          <TableCell align="center">Tipo</TableCell>
+                          {headCells.map((headCell) => (
+                            <TableCell key={headCell.id} align='center' sortDirection={this.state.orderBy === headCell.id ? this.state.order : false} onClick={this.handleRequestSort(headCell.id)}>
+                              <TableSortLabel active={this.state.orderBy === headCell.id} direction={this.state.orderBy === headCell.id ? this.state.order : 'asc'}>
+                                {headCell.label}
+                              </TableSortLabel>
+                            </TableCell>
+                          ))}
                           <TableCell align="center">
                             <Link align="right" href="/task/create">
                               <AddIcon />
