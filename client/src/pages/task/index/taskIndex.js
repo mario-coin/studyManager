@@ -18,6 +18,8 @@ import AddIcon from '@material-ui/icons/Add';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import TextField from '@material-ui/core/TextField';
+import { TablePagination } from '@material-ui/core';
 
 import api from '../../../services/api';
 
@@ -52,6 +54,12 @@ const styles = (theme) => ({
     width: 250,
     margin: theme.spacing(1),
     float: 'left'
+  },
+  filterContainer: {
+    margin: theme.spacing(1),
+  },
+  filter: {
+    width: '100%'
   }
 });
 
@@ -61,11 +69,15 @@ class TaskIndex extends React.Component {
 
       this.handleClose = this.handleClose.bind(this);
       this.handleRequestSort = this.handleRequestSort.bind(this);
+      this.handleChangePage = this.handleChangePage.bind(this);
+      this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
       
       this.state = {
         tasks: [],
         order: 'desc',
         orderBy: 'name',
+        rowsPerPage: '12',
+        page: '1',
         snackbarMessage: ''
     };
   }
@@ -87,6 +99,16 @@ class TaskIndex extends React.Component {
     this.setState({'order': isAsc ? 'desc' : 'asc' });
     this.setState({'orderBy': property });
   };
+  
+  handleChangePage = (event, newPage) => {
+    this.setState({'page': newPage });
+  };
+
+  handleChangeRowsPerPage = (event) => {
+    this.setState({'rowsPerPage': parseInt(event.target.value, 10) });
+    this.setState({'page': 0 });
+  };
+
   
   handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -120,6 +142,9 @@ class TaskIndex extends React.Component {
                 <Paper align="center" className={classes.paper}>
                   Tarefas
                 </Paper>
+              </Grid>
+              <Grid item className={classes.filterContainer} xs={12}>
+                <TextField className={classes.filter} id="standard-basic" label="Pesquisar" />
               </Grid>
               <Grid item xs={12}>
                 <Paper align="center" className={classes.paper}>
@@ -160,6 +185,11 @@ class TaskIndex extends React.Component {
                             </TableCell>
                           </TableRow>
                         ))}
+                        <TableRow>
+                          <TableCell colSpan={7} align="right">
+                            <TablePagination rowsPerPageOptions={[5, 10, 25]} component="div" count={this.state.tasks.length} rowsPerPage={this.state.rowsPerPage} page={this.state.page} onChangePage={this.handleChangePage} onChangeRowsPerPage={this.handleChangeRowsPerPage}/>
+                          </TableCell>
+                        </TableRow>
                       </TableBody>
                     </Table>
                   </TableContainer>
