@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     start_date: DataTypes.DATE,
     deadline: DataTypes.DATE,
-    complexity: DataTypes.INTEGER,
+    complexity: DataTypes.ENUM('facil','mediano','dificil'),
     duration: DataTypes.INTEGER,
     type: DataTypes.ENUM('prova', 'trabalho', 'atividade')
   }, {});
