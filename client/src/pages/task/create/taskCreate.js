@@ -215,7 +215,7 @@ class TaskCreate extends React.Component {
                   fullWidth
                   id="type"
                   autoFocus
-                  onChange={this.myChangeHandler}
+                  onChange={this.handleChange}
                 >
                     <MenuItem value={'atividade'}>Atividade</MenuItem>
                     <MenuItem value={'trabalho'}>Trabalho</MenuItem>
