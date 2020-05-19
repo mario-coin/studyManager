@@ -16,12 +16,12 @@ router.get("/get", async (req, res) => {
 });
 
 router.post('/create',async (req,res) => {
-  console.log('########################################################');
-  console.log('----------------------------------->', req.body);
+  // console.log('########################################################');
+  // console.log('----------------------------------->', req.body);
 
-  try{
+  try {
     Task = await Task.create(req.body);
-    return res.status(200).json();
+    return res.status(200).json("Task Registred!");
 
   } catch (err) {
     return res.status(400).json("Task registration failed");

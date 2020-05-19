@@ -17,6 +17,8 @@ import Footer from '../../../template/footer'
 import { TextField, MenuItem } from '@material-ui/core';
 import { Select } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
 import api from '../../../services/api'
 
 
@@ -154,6 +156,7 @@ class TaskCreate extends React.Component {
                   type="date"
                   variant="outlined"
                   required
+                  format="dd/MM/yyyy"
                   fullWidth
                   id="start_date"
                   label="Data Inicio"
@@ -167,6 +170,7 @@ class TaskCreate extends React.Component {
                   name="deadline"
                   variant="outlined"
                   type="date"
+                  format="dd/MM/yyyy"
                   required
                   fullWidth
                   id="deadline"
@@ -176,7 +180,8 @@ class TaskCreate extends React.Component {
                   InputLabelProps={{ shrink: true}}/>
                 </Grid>
                 <Grid item xs={6}>
-                <Select
+                <InputLabel>Complexidade</InputLabel>
+                <Select 
                   name="complexity"
                   variant="outlined"
                   required
@@ -202,13 +207,15 @@ class TaskCreate extends React.Component {
                   onChange={this.myChangeHandler}/>
                 </Grid>
                 <Grid item xs={6}>
+                <InputLabel>Tipo</InputLabel>
                 <Select
                   name="type"
                   variant="outlined"
                   required
                   fullWidth
                   id="type"
-                  autoFocus onChange={this.myChangeHandler}
+                  autoFocus
+                  onChange={this.myChangeHandler}
                 >
                     <MenuItem value={'atividade'}>Atividade</MenuItem>
                     <MenuItem value={'trabalho'}>Trabalho</MenuItem>
