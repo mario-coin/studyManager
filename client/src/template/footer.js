@@ -22,7 +22,7 @@ class Footer extends React.Component{
             <Typography variant="body2" color="textSecondary" align="center">
               {'Copyright © '}
               <Link color="inherit" href="https://material-ui.com/">
-                Study Manager
+                Time Plágio
               </Link>{' '}
               {new Date().getFullYear()}
               {'.'}
