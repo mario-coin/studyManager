@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter, Route, Link  as LinkRouter, Switch} from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Header from '../../../template/header';
 import Grid from '@material-ui/core/Grid';
@@ -20,9 +21,9 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import TextField from '@material-ui/core/TextField';
 import { TablePagination } from '@material-ui/core';
-
 import api from '../../../services/api';
-
+import taskDelete from '../delete/taskDelete';
+ 
 const styles = (theme) => ({
   root: {
     display: 'flex',
@@ -60,28 +61,39 @@ const styles = (theme) => ({
   },
   filter: {
     width: '100%'
+  },
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 });
-
+ 
+const Child = ({ match }) => console.log('match', match) || (
+  <div>
+    <h3>ID: {match.params.id}</h3>
+  </div>
+)
+ 
 class TaskIndex extends React.Component {
   constructor(props) {
       super(props);
-
+ 
       this.handleClose = this.handleClose.bind(this);
       this.handleRequestSort = this.handleRequestSort.bind(this);
       this.handleChangePage = this.handleChangePage.bind(this);
       this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
-      
+     
       this.state = {
         tasks: [],
         order: 'desc',
         orderBy: 'name',
         rowsPerPage: '12',
         page: '1',
-        snackbarMessage: ''
+        snackbarMessage: '',
     };
   }
-
+ 
   componentDidMount() {
     api.get("/api/task/get")
     .then(
@@ -93,31 +105,31 @@ class TaskIndex extends React.Component {
       }
     );
   }
-
+ 
   handleRequestSort = (property) => (event) => {
     const isAsc = this.state.orderBy === property && this.state.order === 'asc';
     this.setState({'order': isAsc ? 'desc' : 'asc' });
     this.setState({'orderBy': property });
   };
-  
+ 
   handleChangePage = (event, newPage) => {
     this.setState({'page': newPage });
   };
-
+ 
   handleChangeRowsPerPage = (event) => {
     this.setState({'rowsPerPage': parseInt(event.target.value, 10) });
     this.setState({'page': 0 });
   };
-
-  
+ 
+ 
   handleClose = (event, reason) => {
     if (reason === 'clickaway') {
         return;
     }
-
+ 
     this.setState({'snackbarMessage': '' });
   };
-
+ 
   render(){
     const { classes } = this.props;
     const headCells = [
@@ -128,14 +140,14 @@ class TaskIndex extends React.Component {
       { id: 'duration', label: 'Duração' },
       { id: 'type', label: 'Tipo' },
     ];
-    
+   
     return (
       <div className={classes.root}>
         <Header />
-
+ 
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
-          
+         
           <Grid container justify="center" className={classes.root}>
             <Grid container justify="center">
               <Grid item xs={12}>
@@ -168,7 +180,7 @@ class TaskIndex extends React.Component {
                       </TableHead>
                       <TableBody>
                         {this.state.tasks.map((row) => (
-                          <TableRow key={row.name}>
+                          <TableRow key={row.id}>
                             <TableCell component="th" scope="row" align="center">{row.name}</TableCell>
                             <TableCell align="center">{row.start_date}</TableCell>
                             <TableCell align="center">{row.deadline}</TableCell>
@@ -176,12 +188,14 @@ class TaskIndex extends React.Component {
                             <TableCell align="center">{row.duration}</TableCell>
                             <TableCell align="center">{row.type}</TableCell>
                             <TableCell align="center">
-                              <Link align="right" href="/task/edit">
-                                <EditIcon />
-                              </Link>
-                              <Link align="right" href="/task/delete">
-                                <DeleteIcon />
-                              </Link>
+                            <BrowserRouter>
+                              <LinkRouter to={`/task/edit/${row.id}`}><EditIcon Redirect  to={`/task/edit/${row.id}`}/></LinkRouter>
+                              <Route path="/task/edit/:id" component={Child}/>
+                            </BrowserRouter>
+                            <Switch>
+                              <LinkRouter to={`/task/delete/${row.id}`}><DeleteIcon onClick={`/task/delete/${row.id}`}/></LinkRouter>
+                              <Route path="/task/delete/:id" component={(props) => <taskDelete id= {props.match.params.id}></taskDelete>}/>
+                            </Switch>
                             </TableCell>
                           </TableRow>
                         ))}
@@ -197,7 +211,7 @@ class TaskIndex extends React.Component {
               </Grid>
             </Grid>
           </Grid>
-          
+         
           <Snackbar
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                 open={this.state.snackbarMessage.length > 0}
@@ -212,12 +226,12 @@ class TaskIndex extends React.Component {
                     </React.Fragment>
                 }
             />
-          
+         
           <Footer />
         </main>
       </div>
     );
   }
 }
-
+ 
 export default withStyles(styles)(TaskIndex);

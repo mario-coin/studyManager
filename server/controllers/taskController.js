@@ -29,4 +29,17 @@ router.post('/create',async (req,res) => {
   
 });
 
+router.delete('/delete/:id', async (req,res) => {
+  try{
+    const  { id }  = req.params;
+    const task = await Task.findByPk(id);
+    console.log('dkfpsakd', id);
+    await task.destroy(req.body);
+    return res.status(200).json("Task deleted");
+
+  } catch (err) {
+    return res.status(400).json("Task not deleted");
+  };
+})
+
 module.exports = router;
