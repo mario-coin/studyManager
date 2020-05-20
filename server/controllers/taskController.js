@@ -41,8 +41,8 @@ router.post('/create',async (req,res) => {
   // console.log('----------------------------------->', req.body);
 
   try {
-    Task = await Task.create(req.body);
-    return res.status(200).json("Task Registred!");
+    task = await Task.create(req.body);
+    return res.status(200).json();
 
   } catch (err) {
     return res.status(400).json("Task registration failed");
