@@ -84,7 +84,7 @@ class TaskCreate extends React.Component {
       api.post("/api/task/create", this.state.task)
       .then(
           (response) => {
-              this.props.history.push("/login");
+              this.props.history.push("/task");
           },
           (error) => {
               this.setState({'snackbarMessage': error.response.data });
@@ -254,4 +254,4 @@ class TaskCreate extends React.Component {
   }
 }
 
-export default withStyles(styles)(TaskCreate);
+export default withStyles(styles)(withRouter(TaskCreate));
