@@ -54,8 +54,8 @@ const Routes = () => (
         <PrivateRoute path="/user/" component={() => <UserIndex /> }/>
         {/* Tarefa */}
         <PrivateRoute path="/task/create" component={() => <TaskCreate /> }/>
-        <PrivateRoute path="/task/edit/:id" component={() => <TaskEdit /> }/>
         <PrivateRoute path="/task/delete/:id" component={(props) => <TaskDelete {...props} /> }/>
+        <PrivateRoute path="/task/edit/:id" component={(props) => <TaskEdit {...props}/> }/>
         <PrivateRoute path="/task/" component={() => <TaskIndex /> }/>
         {/* Por último, se nenhuma das rotas acima contemplar */}
         <PrivateRoute path="/" component={() => 

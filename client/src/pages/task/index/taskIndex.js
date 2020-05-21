@@ -21,8 +21,10 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import TextField from '@material-ui/core/TextField';
 import { TablePagination } from '@material-ui/core';
-import api from '../../../services/api';
+import TaskEdit from '../edit/taskEdit';
 import taskDelete from '../delete/taskDelete';
+ 
+import api from '../../../services/api';
  
 const styles = (theme) => ({
   root: {
@@ -78,7 +80,9 @@ const Child = ({ match }) => console.log('match', match) || (
 class TaskIndex extends React.Component {
   constructor(props) {
       super(props);
- 
+
+      this.handleChange = this.handleChange.bind(this);
+      this.search = this.search.bind(this);
       this.handleClose = this.handleClose.bind(this);
       this.handleRequestSort = this.handleRequestSort.bind(this);
       this.handleChangePage = this.handleChangePage.bind(this);
@@ -86,42 +90,79 @@ class TaskIndex extends React.Component {
      
       this.state = {
         tasks: [],
-        order: 'desc',
-        orderBy: 'name',
-        rowsPerPage: '12',
-        page: '1',
-        snackbarMessage: '',
+        count: 0,
+        filter: '',
+        order: null,
+        orderBy: null,
+        rowsPerPage: 5,
+        page: 0,
+        snackbarMessage: ''
     };
   }
- 
-  componentDidMount() {
-    api.get("/api/task/get")
+
+  /**
+   * evento de pesquisa
+   */
+  handleChange = (event) => {
+    let nam = event.target.name;
+    let val = event.target.value;
+
+    this.setState({[nam]: val});
+    
+    this.search(val, this.state.order, this.state.orderBy, this.state.rowsPerPage, this.state.page);
+  }
+
+  /**
+   * consulta em banco
+   */
+  search = (filter, order, orderBy, rowsPerPage, page) => {
+    api.get("/api/task/get", { params: {filter, order: order ?? 'asc', orderBy: orderBy ?? 'name', rowsPerPage, page }})
     .then(
       (response) => {
-        this.setState({'tasks': response.data });
+        this.setState({'tasks': response.data.tasks });
+        this.setState({'count': response.data.count });
       },
       (error) => {
         this.setState({'snackbarMessage': error.response.data });
       }
     );
   }
- 
-  handleRequestSort = (property) => (event) => {
-    const isAsc = this.state.orderBy === property && this.state.order === 'asc';
-    this.setState({'order': isAsc ? 'desc' : 'asc' });
-    this.setState({'orderBy': property });
+
+  componentDidMount() {
+    this.search(this.state.filter, this.state.order, this.state.orderBy, this.state.rowsPerPage, this.state.page);
+  }
+
+  /**
+   * evento de ordenação de coluna
+   */
+  handleRequestSort = (orderBy) => (event) => {
+    const toAsc = this.state.orderBy === orderBy && this.state.order === 'desc';
+    const order = toAsc ? 'asc' : 'desc';
+    this.setState({'order':  order});
+    this.setState({'orderBy': orderBy });
+
+    this.search(this.state.filter, order, orderBy, this.state.rowsPerPage, this.state.page);
   };
- 
-  handleChangePage = (event, newPage) => {
-    this.setState({'page': newPage });
+  
+  /**
+   * evento de troca de página
+   */
+  handleChangePage = (event, page) => {
+    this.setState({'page': page });
+
+    this.search(this.state.filter, this.state.order, this.state.orderBy, this.state.rowsPerPage, page);
   };
- 
+
+  /**
+   * evento de atualização do número de itens por página
+   */
   handleChangeRowsPerPage = (event) => {
-    this.setState({'rowsPerPage': parseInt(event.target.value, 10) });
+    let rowsPerPage = parseInt(event.target.value, 10);
+    this.setState({'rowsPerPage': rowsPerPage });
     this.setState({'page': 0 });
+
+    this.search(this.state.filter, this.state.order, this.state.orderBy, rowsPerPage, 0);
   };
- 
- 
   handleClose = (event, reason) => {
     if (reason === 'clickaway') {
         return;
@@ -149,66 +190,64 @@ class TaskIndex extends React.Component {
           <div className={classes.appBarSpacer} />
          
           <Grid container justify="center" className={classes.root}>
-            <Grid container justify="center">
-              <Grid item xs={12}>
-                <Paper align="center" className={classes.paper}>
-                  Tarefas
-                </Paper>
-              </Grid>
-              <Grid item className={classes.filterContainer} xs={12}>
-                <TextField className={classes.filter} id="standard-basic" label="Pesquisar" />
-              </Grid>
-              <Grid item xs={12}>
-                <Paper align="center" className={classes.paper}>
-                  <TableContainer>
-                    <Table className={classes.table} aria-label="simple table">
-                      <TableHead>
-                        <TableRow>
-                          {headCells.map((headCell) => (
-                            <TableCell key={headCell.id} align='center' sortDirection={this.state.orderBy === headCell.id ? this.state.order : false} onClick={this.handleRequestSort(headCell.id)}>
-                              <TableSortLabel active={this.state.orderBy === headCell.id} direction={this.state.orderBy === headCell.id ? this.state.order : 'asc'}>
-                                {headCell.label}
-                              </TableSortLabel>
-                            </TableCell>
-                          ))}
-                          <TableCell align="center">
-                            <Link align="right" href="/task/create">
-                              <AddIcon />
-                            </Link>
+            <Grid item xs={12}>
+              <Paper align="center" className={classes.paper}>
+                Tarefas
+              </Paper>
+            </Grid>
+            <Grid item className={classes.filterContainer} xs={12}>
+              <TextField className={classes.filter} id="filter" name="filter" label="Pesquisar" onChange={this.handleChange}/>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper align="center" className={classes.paper}>
+                <TableContainer>
+                  <Table className={classes.table} aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        {headCells.map((headCell) => (
+                          <TableCell key={headCell.id} align='center' sortDirection={this.state.orderBy === headCell.id ? 'asc' : false} onClick={this.handleRequestSort(headCell.id)}>
+                            <TableSortLabel
+                              active={this.state.orderBy === headCell.id}
+                              direction={this.state.orderBy === headCell.id
+                                ? this.state.order
+                                : 'asc'}>
+                              {headCell.label}
+                            </TableSortLabel>
                           </TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {this.state.tasks.map((row) => (
-                          <TableRow key={row.id}>
-                            <TableCell component="th" scope="row" align="center">{row.name}</TableCell>
-                            <TableCell align="center">{row.start_date}</TableCell>
-                            <TableCell align="center">{row.deadline}</TableCell>
-                            <TableCell align="center">{row.complexity}</TableCell>
-                            <TableCell align="center">{row.duration}</TableCell>
-                            <TableCell align="center">{row.type}</TableCell>
-                            <TableCell align="center">
-                            <BrowserRouter>
-                              <LinkRouter to={`/task/edit/${row.id}`}><EditIcon Redirect  to={`/task/edit/${row.id}`}/></LinkRouter>
-                              <Route path="/task/edit/:id" component={Child}/>
-                            </BrowserRouter>
-                            <Switch>
-                              <LinkRouter to={`/task/delete/${row.id}`}><DeleteIcon onClick={`/task/delete/${row.id}`}/></LinkRouter>
-                              <Route path="/task/delete/:id" component={(props) => <taskDelete id= {props.match.params.id}></taskDelete>}/>
-                            </Switch>
-                            </TableCell>
-                          </TableRow>
                         ))}
-                        <TableRow>
-                          <TableCell colSpan={7} align="right">
-                            <TablePagination rowsPerPageOptions={[5, 10, 25]} component="div" count={this.state.tasks.length} rowsPerPage={this.state.rowsPerPage} page={this.state.page} onChangePage={this.handleChangePage} onChangeRowsPerPage={this.handleChangeRowsPerPage}/>
+                        <TableCell align="center">
+                          <Link align="right" href="/task/create">
+                            <AddIcon />
+                          </Link>
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {this.state.tasks.map((row) => (
+                        <TableRow key={row.id}>
+                          <TableCell component="th" scope="row" align="center">{row.name}</TableCell>
+                          <TableCell align="center">{row.start_date}</TableCell>
+                          <TableCell align="center">{row.deadline}</TableCell>
+                          <TableCell align="center">{row.complexity}</TableCell>
+                          <TableCell align="center">{row.duration}</TableCell>
+                          <TableCell align="center">{row.type}</TableCell>
+                          <TableCell align="center">
+                          <Switch>
+                            <LinkRouter to={`/task/edit/${row.id}`}><EditIcon/></LinkRouter>
+                            <Route path="/task/edit/:id" component={(props) => <TaskEdit id={props.match.params.id} ></TaskEdit>}></Route>
+                          </Switch>
+                          <Switch>
+                            <LinkRouter to={`/task/delete/${row.id}`}><DeleteIcon onClick={`/task/delete/${row.id}`}/></LinkRouter>
+                            <Route path="/task/delete/:id" component={(props) => <taskDelete id= {props.match.params.id}></taskDelete>}/>
+                          </Switch>
                           </TableCell>
                         </TableRow>
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                </Paper>
-              </Grid>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+                <TablePagination rowsPerPageOptions={[1, 5, 10, 25]} component="div" count={this.state.count} rowsPerPage={this.state.rowsPerPage} page={this.state.page} onChangePage={this.handleChangePage} onChangeRowsPerPage={this.handleChangeRowsPerPage}/>
+              </Paper>
             </Grid>
           </Grid>
          
