@@ -21,7 +21,7 @@ module.exports = {
         type: Sequelize.DATE
       },
       complexity: {
-        type: Sequelize.INTEGER
+        type: Sequelize.ENUM('facil','mediano','dificil')
       },
       duration: {
         type: Sequelize.INTEGER

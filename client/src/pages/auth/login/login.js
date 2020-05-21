@@ -43,7 +43,7 @@ const styles = theme => ({
 class Login extends React.Component {
   constructor(props) {
       super(props);
-      this.myChangeHandler = this.myChangeHandler.bind(this);
+      this.handleChange = this.handleChange.bind(this);
       this.submit = this.submit.bind(this);
       this.handleClose = this.handleClose.bind(this);
 
@@ -56,7 +56,7 @@ class Login extends React.Component {
       };
   }
 
-  myChangeHandler = (event) => {
+  handleChange = (event) => {
       let nam = event.target.name;
       let val = event.target.value;
 
@@ -99,8 +99,8 @@ class Login extends React.Component {
             <LockOutlinedIcon />
           </Avatar>
           <form className={classes.form} onSubmit={this.submit}>
-            <TextField variant="outlined" margin="normal" required fullWidth id="username" label="Usuario" name="username" autoComplete="username" autoFocus onChange={this.myChangeHandler}/>
-            <TextField variant="outlined" margin="normal" required fullWidth name="password" label="Senha" type="password" id="password" autoComplete="password" onChange={this.myChangeHandler}/>
+            <TextField variant="outlined" margin="normal" required fullWidth id="username" label="Usuario" name="username" autoComplete="username" autoFocus onChange={this.handleChange}/>
+            <TextField variant="outlined" margin="normal" required fullWidth name="password" label="Senha" type="password" id="password" autoComplete="password" onChange={this.handleChange}/>
             <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Lembrar senha"/>
             <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
               Entrar
