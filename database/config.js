@@ -1,5 +1,5 @@
 module.exports = {
-  username: 'study_manager',
+  username: 'root',
   password: '',
   database: 'study_manager',
   host: '127.0.0.1',
