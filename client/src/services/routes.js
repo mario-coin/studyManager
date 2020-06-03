@@ -14,6 +14,7 @@ import TaskDelete from '../pages/task/delete/taskDelete';
 import Forgot from '../pages/auth/forgot/forgot';
 import Login from '../pages/auth/login/login';
 import Register from '../pages/auth/register/register';
+import Reset from '../pages/auth/forgot/reset'
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -37,6 +38,9 @@ const Routes = () => (
         <Route path="/forgot">
             <Forgot />
         </Route>
+        <Route path="/reset/:token">
+            <Reset />
+        </Route>
         <Route path="/login">
             <Login />
         </Route>
@@ -47,6 +51,7 @@ const Routes = () => (
         {/* ***************************** */}
         {/* Routes validated by the token */}
         {/* ***************************** */}
+
         {/* Usuário */}
         <PrivateRoute path="/user/create" component={() => <UserCreate /> }/>
         <PrivateRoute path="/user/edit" component={() => <UserEdit /> }/>
