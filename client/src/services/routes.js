@@ -15,6 +15,7 @@ import Forgot from '../pages/auth/forgot/forgot';
 import Login from '../pages/auth/login/login';
 import Register from '../pages/auth/register/register';
 import Reset from '../pages/auth/forgot/reset'
+import Kanban from '../pages/kanban/kanban';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -63,6 +64,7 @@ const Routes = () => (
         <PrivateRoute path="/task/edit/:id" component={(props) => <TaskEdit {...props}/> }/>
         <PrivateRoute path="/task/" component={() => <TaskIndex /> }/>
         {/* Por último, se nenhuma das rotas acima contemplar */}
+        <PrivateRoute path="/kanban" component={() => <Kanban />}/>
         <PrivateRoute path="/" component={() => 
             <Dashboard />
             // <Hello />

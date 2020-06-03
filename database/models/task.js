@@ -7,7 +7,8 @@ module.exports = (sequelize, DataTypes) => {
     deadline: DataTypes.DATE,
     complexity: DataTypes.ENUM('facil','mediano','dificil'),
     duration: DataTypes.INTEGER,
-    type: DataTypes.ENUM('prova', 'trabalho', 'atividade')
+    type: DataTypes.ENUM('prova', 'trabalho', 'atividade'),
+    situation: DataTypes.ENUM('pendente', 'desenvolvendo', 'concluido')
   }, {});
   Task.associate = function(models) {
     // associations can be defined here
