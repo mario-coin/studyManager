@@ -15,7 +15,7 @@ import Link from '@material-ui/core/Link';
 
 export const mainListItems = (
   <div>
-    <Link href="/">
+    <Link href="/kanban">
       <ListItem button>
         <ListItemIcon>
           <DashboardIcon />
