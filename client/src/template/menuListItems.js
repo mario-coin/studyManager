@@ -35,12 +35,12 @@ export const mainListItems = (
         </ListItemText>
       </ListItem>
     </Link>
-    <Link href="/">
+    <Link href="/gantt">
       <ListItem button>
         <ListItemIcon>
           <BarChartIcon />
         </ListItemIcon>
-        <ListItemText primary="Gráficos" />
+        <ListItemText primary="Gantt" />
       </ListItem>
     </Link>
     <Link href="/">

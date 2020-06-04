@@ -13,8 +13,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    password: DataTypes.STRING
-  }, {
+    password: {
+      type: DataTypes.STRING
+    },
+    passwordResetToken: {
+      type: DataTypes.STRING
+    },
+    passwordResetExpires: {
+      type: DataTypes.DATE
+    }
+  }, 
+  
+  {
     hooks: {
       beforeSave: async (user, options) => {
         user.password = await bcrypt.hash(user.password, 8);

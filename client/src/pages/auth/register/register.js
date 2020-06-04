@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -72,7 +72,8 @@ class Register extends React.Component {
                 this.props.history.push("/login");
             },
             (error) => {
-                this.setState({'snackbarMessage': error.response.data });
+                alert('waaa');
+                // this.setState({'snackbarMessage': error.response.data });
             }
         );
     }

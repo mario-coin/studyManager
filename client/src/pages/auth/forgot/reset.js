@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import { withRouter} from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -19,7 +20,7 @@ import Container from '@material-ui/core/Container';
 import Footer from '../../../template/footer';
 import { render } from 'react-dom';
 import api from '../../../services/api'
-
+import axios from 'axios';
 
 const styles = theme => ({
   paper: {
@@ -41,42 +42,46 @@ const styles = theme => ({
   },
 });
 
-class Forgot extends React.Component {
+class Reset extends React.Component {
   constructor(props) {
     super(props);
     this.submit = this.submit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleClose= this.handleClose.bind(this);
+    console.log(this.props.match.params.token);
 
     this.state = {
-      forgot: {
-        email: ''
+      reset: {
+        password: '',
+        token: this.props.match.params.token,
+        email: '',
       },
       snackbarMessage: ''
     };
-}
-  
-  
-  async submit(event) {
-    event.preventDefault();
-    
-    api.post("/api/user/forgot", this.state.forgot)
-    .then(
-        (response) => {
-            alert("Link enviado por e-mail, favor verificar.")
-            this.props.history.push("/login");
-        },
-        (error) => {
-            this.setState({'snackbarMessage': error.response.data });
-        }
-    );
   }
+  
+    async submit(event) {
+        event.preventDefault();
+        
+        api.post('/api/user/reset', this.state.reset)
+        .then(
+            (response) => {
+                alert("Senha Alterada com Sucesso!");
+                this.props.history.push("/login");
+            },
+            (error) => {
+                this.setState({'snackbarMessage': error.response.data });
+            }
+        );
+    }
 
   handleChange = (event) => {
     let nam = event.target.name;
     let val = event.target.value;
 
-    let forgot = this.state.forgot;
-    forgot[nam] = val;
-    this.setState({'forgot': forgot});
+    let reset = this.state.reset;
+    reset[nam] = val;
+    this.setState({'reset': reset});
   }
 
   handleClose = (event, reason) => {
@@ -87,6 +92,7 @@ class Forgot extends React.Component {
     this.setState({'snackbarMessage': '' });
   };
 
+     
   render(){
     const { classes } = this.props;
 
@@ -98,10 +104,17 @@ class Forgot extends React.Component {
             <LockOutlinedIcon />
           </Avatar>
           <form className={classes.form} onSubmit={this.submit}>
-            <TextField variant="outlined" margin="normal" required fullWidth id="email" label="Email" name="email" autoComplete="email" autoFocus onChange={this.handleChange}/>
-            <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-              Solicitar
-            </Button>
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                    <TextField variant="outlined" required fullWidth id="email" label="Email" name="email" autoComplete="email" onChange={this.handleChange}/>
+                    </Grid>
+                    <Grid item xs={12}>
+                    <TextField variant="outlined" required fullWidth name="password" label="Senha" type="password" id="password" autoComplete="current-password" onChange={this.handleChange}/>
+                    </Grid>
+                </Grid>
+                <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit} >
+                    Alterar Senha
+                </Button>
             <Snackbar
                     anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                     open={this.state.snackbarMessage.length > 0}
@@ -116,13 +129,6 @@ class Forgot extends React.Component {
                         </React.Fragment>
                     }
             />
-            <Grid container justify="flex-end">
-                <Grid item>
-                <Link href="/login" variant="body2">
-                    Já possui uma conta? Entrar
-                </Link>
-                </Grid>
-            </Grid>
           </form>
         </div>
         <Box mt={8}>
@@ -133,4 +139,4 @@ class Forgot extends React.Component {
   }
 }
 
-export default withStyles(styles)(withRouter(Forgot));
+export default withStyles(styles)(withRouter(Reset));
