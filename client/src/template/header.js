@@ -76,6 +76,9 @@ const styles = (theme) => ({
       width: theme.spacing(9),
     },
   },
+  fullHeight: {
+    height: '100%',
+  },
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -176,7 +179,7 @@ class Header extends React.Component{
             </div>
           </Toolbar>
         </AppBar>
-        <Drawer variant="permanent" classes={{ paper: clsx(classes.drawerPaper, !this.state.open && classes.drawerPaperClose) }} open={this.state.open}>
+        <Drawer variant="permanent" className={clsx(classes.fullHeight)} classes={{ paper: clsx(classes.drawerPaper, !this.state.open && classes.drawerPaperClose) }} open={this.state.open}>
           <div className={classes.toolbarIcon}>
             <IconButton onClick={this.handleDrawerClose}>
               <ChevronLeftIcon />

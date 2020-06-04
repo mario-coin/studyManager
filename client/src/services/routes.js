@@ -11,6 +11,7 @@ import TaskIndex from '../pages/task/index/taskIndex';
 import TaskCreate from '../pages/task/create/taskCreate';
 import TaskEdit from '../pages/task/edit/taskEdit';
 import TaskDelete from '../pages/task/delete/taskDelete';
+import Gantt from '../pages/gantt/gantt';
 import Forgot from '../pages/auth/forgot/forgot';
 import Login from '../pages/auth/login/login';
 import Register from '../pages/auth/register/register';
@@ -63,6 +64,8 @@ const Routes = () => (
         <PrivateRoute path="/task/delete/:id" component={(props) => <TaskDelete {...props} /> }/>
         <PrivateRoute path="/task/edit/:id" component={(props) => <TaskEdit {...props}/> }/>
         <PrivateRoute path="/task/" component={() => <TaskIndex /> }/>
+        {/* Gantt */}
+        <PrivateRoute path="/gantt/" component={() => <Gantt /> }/>
         {/* Por último, se nenhuma das rotas acima contemplar */}
         <PrivateRoute path="/kanban" component={() => <Kanban />}/>
         <PrivateRoute path="/" component={() => 
