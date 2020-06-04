@@ -18,6 +18,7 @@ import Drawer from '@material-ui/core/Drawer';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
+import Notification from '../template/notification'
 
 const drawerWidth = 240;
 
@@ -163,10 +164,8 @@ class Header extends React.Component{
                   <Chat />
                 </Badge>
               </IconButton>
-              <IconButton aria-label="show 17 new notifications" color="inherit">
-                <Badge badgeContent={17} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
+              <IconButton color="inherit">
+                <Notification />
               </IconButton>
               <IconButton edge="end" aria-label="account of current user" aria-controls={menuId} aria-haspopup="true"
                 // onClick={handleProfileMenuOpen}
