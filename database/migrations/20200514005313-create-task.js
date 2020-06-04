@@ -29,6 +29,10 @@ module.exports = {
       type: {
         type: Sequelize.ENUM('prova', 'trabalho', 'atividade')
       },
+      situation: {
+        type: Sequelize.ENUM('pendente', 'desenvolvendo', 'concluido'),
+        defaultValue: 'pendente'
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
