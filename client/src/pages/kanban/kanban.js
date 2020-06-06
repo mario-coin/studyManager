@@ -13,6 +13,7 @@ import Paper from '@material-ui/core/Paper';
 import Footer from '../../template/footer';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
  
 import api from '../../services/api';
  
@@ -96,6 +97,16 @@ class Dashboard extends React.Component {
     );
   }
 
+  handleChange(event){
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+    this.setState({[name]: event.target.value})
+    console.log(target);
+    console.log(value);
+    console.log(name);
+}
+
   findTasksBy(taskSituation){
     const { classes } = this.props;
     const aux = [];
@@ -127,11 +138,12 @@ class Dashboard extends React.Component {
             <Typography className={classes.pos} color="textSecondary">
               Situação: {row.situation}
             </Typography>
-            <form>
-              <Select value={this.state.tasks.situation} onChange={this.handleChange}>
-                <MenuItem label={this.state.tasks.length}/>
+            <InputLabel id="demo-simple-select-label">Situação</InputLabel>
+              <Select labelId="demo-simple-select-label" id="demo-simple-select" name="tasks" value={this.state.situation} onChange={this.handleChange.bind(this)}>
+                <MenuItem value='pendente'>Pendente</MenuItem>
+                <MenuItem value='desenvolvendo'>Desenvolvendo</MenuItem>
+                <MenuItem value='concluido'>Concluído</MenuItem>
               </Select>
-            </form>
         </CardContent>
         </Card>
       ))
@@ -202,7 +214,6 @@ class Dashboard extends React.Component {
  
   render(){
     const { classes } = this.props;
-    const whatSituation = this.state.tasks.filter(task => task.situation);
  
     return (
         <div className={classes.root}>
