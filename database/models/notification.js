@@ -1,13 +1,13 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const notification = sequelize.define('notification', {
+  const Notification = sequelize.define('Notification', {
     title: DataTypes.STRING,
     description: DataTypes.STRING,
     viewed: DataTypes.BOOLEAN,
     type: DataTypes.ENUM('prova', 'trabalho', 'atividade')
   }, {});
-  notification.associate = function(models) {
+  Notification.associate = function(models) {
     // associations can be defined here
   };
-  return notification;
+  return Notification;
 };
