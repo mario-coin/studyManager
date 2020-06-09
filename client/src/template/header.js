@@ -18,6 +18,7 @@ import Drawer from '@material-ui/core/Drawer';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
+import Notification from '../template/notification'
 
 const drawerWidth = 240;
 
@@ -75,6 +76,9 @@ const styles = (theme) => ({
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(9),
     },
+  },
+  fullHeight: {
+    height: '100%',
   },
   search: {
     position: 'relative',
@@ -163,10 +167,8 @@ class Header extends React.Component{
                   <Chat />
                 </Badge>
               </IconButton>
-              <IconButton aria-label="show 17 new notifications" color="inherit">
-                <Badge badgeContent={17} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
+              <IconButton color="inherit">
+                <Notification />
               </IconButton>
               <IconButton edge="end" aria-label="account of current user" aria-controls={menuId} aria-haspopup="true"
                 // onClick={handleProfileMenuOpen}
@@ -176,7 +178,7 @@ class Header extends React.Component{
             </div>
           </Toolbar>
         </AppBar>
-        <Drawer variant="permanent" classes={{ paper: clsx(classes.drawerPaper, !this.state.open && classes.drawerPaperClose) }} open={this.state.open}>
+        <Drawer variant="permanent" className={clsx(classes.fullHeight)} classes={{ paper: clsx(classes.drawerPaper, !this.state.open && classes.drawerPaperClose) }} open={this.state.open}>
           <div className={classes.toolbarIcon}>
             <IconButton onClick={this.handleDrawerClose}>
               <ChevronLeftIcon />

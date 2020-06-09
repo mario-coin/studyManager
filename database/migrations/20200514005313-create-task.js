@@ -31,7 +31,7 @@ module.exports = {
       },
       situation: {
         type: Sequelize.ENUM('pendente', 'desenvolvendo', 'concluido'),
-        defaultValue: 'pedente'
+        defaultValue: 'pendente'
       },
       createdAt: {
         allowNull: false,
