@@ -154,13 +154,13 @@ class TaskCreate extends React.Component {
                 <TextField 
                   autoComplete="start"
                   name="start_date"
-                  type="date"
+                  type="datetime-local"
                   variant="outlined"
                   required
                   format="dd/MM/yyyy"
                   fullWidth
                   id="start_date"
-                  label="Data Inicio"
+                  label="Data Inicio" 
                   autoFocus
                   onChange={this.handleChange}
                   InputLabelProps={{ shrink: true}}/>
@@ -170,7 +170,7 @@ class TaskCreate extends React.Component {
                   autoComplete="deadline"
                   name="deadline"
                   variant="outlined"
-                  type="date"
+                  type="datetime-local"
                   format="dd/MM/yyyy"
                   required
                   fullWidth
