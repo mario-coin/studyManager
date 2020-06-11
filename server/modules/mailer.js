@@ -10,3 +10,6 @@ const transport = nodemailer.createTransport({
   });
 
 module.exports = transport;
+
+//sstudymanager@outlook.com
+//studymanager2020
