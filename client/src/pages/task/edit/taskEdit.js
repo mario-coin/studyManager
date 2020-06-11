@@ -150,7 +150,7 @@ class TaskEdit extends React.Component {
                 <TextField 
                   autoComplete="start"
                   name="start_date"
-                  type="date"
+                  type="datetime-local"
                   variant="outlined"
                   required
                   fullWidth
@@ -165,7 +165,7 @@ class TaskEdit extends React.Component {
                   autoComplete="deadline"
                   name="deadline"
                   variant="outlined"
-                  type="date"
+                  type="datetime-local"
                   required
                   fullWidth
                   id="deadline"
