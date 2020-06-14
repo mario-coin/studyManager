@@ -18,6 +18,8 @@ import { TextField, MenuItem } from '@material-ui/core';
 import { Select } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import api from '../../../services/api'
+import moment from "moment";
+import "moment-timezone";
 
 
 const styles = (theme) => ({
@@ -75,6 +77,22 @@ class TaskEdit extends React.Component {
       }
   }
 
+  componentDidMount() {
+    this.loadTask();
+  }
+
+  loadTask = () => {
+    api.get(`api${this.props.location.pathname}`)
+    .then(
+      (response) => {
+        this.setState({'task': response.data.task });
+      },
+      (error) => {
+        this.setState({'snackbarMessage': error.response.data });
+      }
+    );
+  }
+
   async submit(event) {
       event.preventDefault();
       api.put(`/api${this.props.location.pathname}`, this.state.task)
@@ -126,6 +144,7 @@ class TaskEdit extends React.Component {
                 <TextField
                   autoComplete="name"
                   name="name"
+                  value={this.state.task.name}
                   variant="outlined"
                   required
                   fullWidth
@@ -138,6 +157,7 @@ class TaskEdit extends React.Component {
                 <TextField 
                   autoComplete="desc"
                   name="description"
+                  value={this.state.task.description}
                   variant="outlined"
                   required
                   fullWidth
@@ -150,7 +170,7 @@ class TaskEdit extends React.Component {
                 <TextField 
                   autoComplete="start"
                   name="start_date"
-                  type="date"
+                  value={moment(this.state.task.start_date).tz("America/Sao_Paulo").format("DD/MM/YYYY HH:MM:SS")}
                   variant="outlined"
                   required
                   fullWidth
@@ -164,8 +184,8 @@ class TaskEdit extends React.Component {
                 <TextField
                   autoComplete="deadline"
                   name="deadline"
+                  value={moment(this.state.task.deadline).tz("America/Sao_Paulo").format("DD/MM/YYYY HH:MM:SS")}
                   variant="outlined"
-                  type="date"
                   required
                   fullWidth
                   id="deadline"
@@ -177,6 +197,7 @@ class TaskEdit extends React.Component {
                 <Grid item xs={6}>
                 <Select
                   name="complexity"
+                  value={this.state.task.complexity}
                   variant="outlined"
                   required
                   fullWidth
@@ -192,6 +213,7 @@ class TaskEdit extends React.Component {
                 <TextField
                   autoComplete="duration"
                   name="duration"
+                  value={this.state.task.duration}
                   variant="outlined"
                   required
                   fullWidth
@@ -203,6 +225,7 @@ class TaskEdit extends React.Component {
                 <Grid item xs={6}>
                 <Select
                   name="type"
+                  value={this.state.task.type}
                   variant="outlined"
                   required
                   fullWidth

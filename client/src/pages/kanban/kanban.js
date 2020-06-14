@@ -14,8 +14,11 @@ import Footer from '../../template/footer';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
+import moment from "moment";
+import "moment-timezone";
  
 import api from '../../services/api';
+import { TextareaAutosize } from '@material-ui/core';
  
 const styles = (theme) => ({
   root: {
@@ -58,6 +61,7 @@ class Dashboard extends React.Component {
       this.desenvolvendoCard = this.desenvolvendoCard.bind(this);
       this.concluidoCard = this.concluidoCard.bind(this);
       this.findTaskBy = this.findTasksBy.bind(this);
+      this.handleChange = this.handleChange.bind(this);
       this.myRef = React.createRef();
  
       this.state = {
@@ -71,7 +75,7 @@ class Dashboard extends React.Component {
         snackbarMessage: '',
         pendentes: [],
         desenvolvendo: [],
-        concluido: []
+        concluido: [],
     };
   }
  
@@ -88,8 +92,6 @@ class Dashboard extends React.Component {
         this.setState({'desenvolvendo': this.findTasksBy('desenvolvendo')});
         this.setState({'concluido': this.findTasksBy('concluido')});
         this.setState({'count': response.data.count });
-        console.log(response)
-        console.log(this.state.pendentes)
       },
       (error) => {
         this.setState({'snackbarMessage': error.response.data });
@@ -97,15 +99,27 @@ class Dashboard extends React.Component {
     );
   }
 
-  handleChange(event){
+  handleChange(event) {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-    this.setState({[name]: event.target.value})
-    console.log(target);
-    console.log(value);
-    console.log(name);
-}
+    let task = null;
+    for(var i = 0; i < this.state.tasks.length; i++){
+      if(this.state.tasks[i].id === name){
+        task = this.state.tasks[i];
+      }
+    }
+    task.situation = value;
+    api.put('/api/task/edit/' + name, task)
+    .then(
+      (response) => {
+        window.location.reload(true);
+      },
+      (error) => {
+        this.setState({'snackbarMessage': error.response.data });
+      }
+    )
+  }
 
   findTasksBy(taskSituation){
     const { classes } = this.props;
@@ -130,16 +144,16 @@ class Dashboard extends React.Component {
               {row.name}
             </Typography>
             <Typography className={classes.title} color="textSecondary" gutterBottom>
-              Entrega: {row.deadline}
+              Entrega: {moment(row.deadline).tz("America/Sao_Paulo").format("DD/MM/YYYY HH:MM:SS")}
             </Typography>
             <Typography className={classes.pos} color="textSecondary">
               Tipo: {row.type}
             </Typography>
             <Typography className={classes.pos} color="textSecondary">
-              Situação: {row.situation}
+              Complexidade: {row.complexity}
             </Typography>
-            <InputLabel id="demo-simple-select-label">Situação</InputLabel>
-              <Select labelId="demo-simple-select-label" id="demo-simple-select" name="tasks" value={this.state.situation} onChange={this.handleChange.bind(this)}>
+            <InputLabel>Situação</InputLabel>
+              <Select name={row.id} value={row.situation} onChange={this.handleChange}>
                 <MenuItem value='pendente'>Pendente</MenuItem>
                 <MenuItem value='desenvolvendo'>Desenvolvendo</MenuItem>
                 <MenuItem value='concluido'>Concluído</MenuItem>
@@ -162,17 +176,19 @@ class Dashboard extends React.Component {
               {row.name}
             </Typography>
             <Typography className={classes.title} color="textSecondary" gutterBottom>
-              Entrega: {row.deadline}
+              Entrega: {moment(row.deadline).tz("America/Sao_Paulo").format("DD/MM/YYYY HH:MM:SS")}
             </Typography>
             <Typography className={classes.pos} color="textSecondary">
               Tipo: {row.type}
             </Typography>
             <Typography className={classes.pos} color="textSecondary">
-              Situação: {row.situation}
+              Complexidade: {row.complexity}
             </Typography>
             <form>
-              <Select value={this.state.tasks.situation} onChange={this.handleChange}>
-                <MenuItem label={this.state.tasks.length}/>
+            <Select name={row.id} value={row.situation} onChange={this.handleChange}>
+                <MenuItem value='pendente'>Pendente</MenuItem>
+                <MenuItem value='desenvolvendo'>Desenvolvendo</MenuItem>
+                <MenuItem value='concluido'>Concluído</MenuItem>
               </Select>
             </form>
         </CardContent>
@@ -193,17 +209,19 @@ class Dashboard extends React.Component {
               {row.name}
             </Typography>
             <Typography className={classes.title} color="textSecondary" gutterBottom>
-              Entrega: {row.deadline}
+              Entrega: {moment(row.deadline).tz("America/Sao_Paulo").format("DD/MM/YYYY HH:MM:SS")}
             </Typography>
             <Typography className={classes.pos} color="textSecondary">
               Tipo: {row.type}
             </Typography>
             <Typography className={classes.pos} color="textSecondary">
-              Situação: {row.situation}
+              Complexidade: {row.complexity}
             </Typography>
             <form>
-              <Select value={this.state.tasks.situation} onChange={this.handleChange}>
-                <MenuItem label={this.state.tasks.length}/>
+            <Select name={row.id} value={row.situation} onChange={this.handleChange}>
+                <MenuItem value='pendente'>Pendente</MenuItem>
+                <MenuItem value='desenvolvendo'>Desenvolvendo</MenuItem>
+                <MenuItem value='concluido'>Concluído</MenuItem>
               </Select>
             </form>
         </CardContent>

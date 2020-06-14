@@ -72,4 +72,14 @@ router.put('/edit/:id', async (req,res) => {
   }
 });
 
+router.get('/edit/:id', async (req, res) => {
+  const {id} = req.params;
+  try{
+    let task = await Task.findByPk(id);
+    return res.status(200).json({task});
+  }catch(err){
+    return res.status(400).json("Cannot get");
+  }
+})
+
 module.exports = router;
