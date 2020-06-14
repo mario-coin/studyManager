@@ -3,6 +3,7 @@ import Popover from '@material-ui/core/Popover';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -11,11 +12,17 @@ import Divider from '@material-ui/core/Divider';
 
 import api from '../services/api';
 
+const styles = (theme) => ({
+  typography: {
+    padding: theme.spacing(1),
+  },
+});
+
 
 class Notification extends React.Component {
   constructor(props) {
     super(props);
-    
+    this.loadNotifications = this.loadNotifications.bind(this);
     this.state = {
       notifications: [],
       pop_open: false
@@ -25,6 +32,7 @@ class Notification extends React.Component {
   handleRequestOpen(e) {
 		e.preventDefault();
 		this.setState({
+      //notifications: [],
 			pop_open: !this.state.pop_open,
 			anchorEl: e.currentTarget,
 		});
@@ -36,17 +44,24 @@ class Notification extends React.Component {
     	});
     };
 
-    componentDidMount() {
-        this.loadNotifications();
-      }
+  componentDidMount() {
+    this.loadNotifications();
+  }
     
-      loadNotifications = async () => {
-        const response = await api.get("/notification")
-        this.setState({notifications: response.data.notifications})
-        console.log(response);
+  loadNotifications = () => {
+    api.get("/api/notification/get")
+    .then(
+      (response) => {
+        this.setState({'notifications': response.data.notifications });
+      },
+      (error) => {
+        this.setState({'snackbarMessage': error.response.data });
       }
+    );
+  }
 
   render() {    
+    const { classes } = this.props;
     return (
       <div>
           <IconButton aria-label="show 17 new notifications" color="inherit" onClick={this.handleRequestOpen.bind(this)}>
@@ -57,25 +72,21 @@ class Notification extends React.Component {
             <Popover
 			          open={this.state.pop_open}
 			          anchorEl={this.state.anchorEl}
-			          className="popover_class"
                 anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
                 onClose={this.handleRequestClose.bind(this)}
 			      >
             {this.state.notifications.map((notification) => (
-            <List component="nav" aria-label="secondary mailbox folders">
-              <ListItemText primary={notification.title} />
-              <ListItemText primary={notification.description} />
-              <ListItemText primary={notification.type} />
-            </List>
+            <React.Fragment key={notification.id}>
+              <Typography className={classes.typography}>Tarefa: {notification.title}</Typography>
+              <Typography className={classes.typography}>Descrição: {notification.description}</Typography>
+              <Typography className={classes.typography}>Tipo: {notification.type}</Typography>
+              <Divider />
+            </React.Fragment>
             ))}
-            <Divider />
-            <List component="nav" aria-label="secondary mailbox folders">
-              <ListItemText primary="Teste" />
-            </List>
 			</Popover>
       </div>
     );
   }
 }
 
-export default (Notification);
+export default withStyles(styles)(Notification);

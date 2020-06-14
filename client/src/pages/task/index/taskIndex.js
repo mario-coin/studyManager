@@ -23,6 +23,9 @@ import TextField from '@material-ui/core/TextField';
 import { TablePagination } from '@material-ui/core';
 import TaskEdit from '../edit/taskEdit';
 import taskDelete from '../delete/taskDelete';
+
+import moment from "moment";
+import "moment-timezone";
  
 import api from '../../../services/api';
  
@@ -226,8 +229,8 @@ class TaskIndex extends React.Component {
                       {this.state.tasks.map((row) => (
                         <TableRow key={row.id}>
                           <TableCell component="th" scope="row" align="center">{row.name}</TableCell>
-                          <TableCell align="center">{row.start_date}</TableCell>
-                          <TableCell align="center">{row.deadline}</TableCell>
+                          <TableCell align="center">{moment(row.start_date).tz("America/Sao_Paulo").format("DD/MM/YYYY HH:MM:SS")}</TableCell>
+                          <TableCell align="center">{moment(row.deadline).tz("America/Sao_Paulo").format("DD/MM/YYYY HH:MM:SS")}</TableCell>
                           <TableCell align="center">{row.complexity}</TableCell>
                           <TableCell align="center">{row.duration}</TableCell>
                           <TableCell align="center">{row.type}</TableCell>
