@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter, Route, Switch, Redirect, Router } from "react-router-dom";
 import { isAuthenticated } from "./auth";
 
-import Dashboard from '../pages/dashboard/dashboard';
 import UserIndex from '../pages/user/index/userIndex';
 import UserCreate from '../pages/user/create/userCreate';
 import UserEdit from '../pages/user/edit/userEdit';
@@ -71,7 +70,7 @@ const Routes = () => (
         {/* Notificação */}
         <PrivateRoute path="/kanban" component={() => <Kanban />}/>
         <PrivateRoute path="/" component={() => 
-            <Dashboard />
+            <Kanban />
             // <Hello />
         }/>
     </Switch>

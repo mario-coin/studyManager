@@ -23,7 +23,6 @@ import TextField from '@material-ui/core/TextField';
 import { TablePagination } from '@material-ui/core';
 import TaskEdit from '../edit/taskEdit';
 import taskDelete from '../delete/taskDelete';
-
 import moment from "moment";
 import "moment-timezone";
  

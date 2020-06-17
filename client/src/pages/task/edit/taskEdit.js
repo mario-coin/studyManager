@@ -18,7 +18,7 @@ import { TextField, MenuItem } from '@material-ui/core';
 import { Select } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import api from '../../../services/api'
-
+import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 
 const styles = (theme) => ({
   root: {
@@ -70,9 +70,24 @@ class TaskEdit extends React.Component {
             deadline: '',
             duration: '',
             type: '',
+            dependency: '',
         },
-        snackbarMessage: ''
+        snackbarMessage: '',
+        autocomplete: []
       }
+  }
+  
+  componentDidMount() {
+    api.get("/api/task/autocomplete", {})
+    .then(
+      (response) => {
+        console.log(response.data);
+        this.setState({'autocomplete': response.data.tasks });
+      },
+      (error) => {
+        this.setState({'snackbarMessage': error.response.data });
+      }
+    );
   }
 
   async submit(event) {
@@ -108,6 +123,12 @@ class TaskEdit extends React.Component {
   render(){
     const { classes } = this.props;
     const current_page = this.props.history;
+    
+    const filterOptions = createFilterOptions({
+      matchFrom: 'start',
+      stringify: (option) => option.name,
+    });
+    
     return (
       <div className={classes.root}>
         <Header />
@@ -201,6 +222,7 @@ class TaskEdit extends React.Component {
                   onChange={this.myChangeHandler}/>
                 </Grid>
                 <Grid item xs={6}>
+                <InputLabel>Tipo</InputLabel>
                 <Select
                   name="type"
                   variant="outlined"
@@ -213,6 +235,17 @@ class TaskEdit extends React.Component {
                     <MenuItem value={'trabalho'}>Trabalho</MenuItem>
                     <MenuItem value={'prova'}>Prova</MenuItem>
                 </Select>
+                </Grid> 
+                <Grid item xs={6}>
+                  <InputLabel>Dependência</InputLabel>
+                  <Autocomplete
+                    id="filter-demo"
+                    fullWidth
+                    options={this.state.autocomplete}
+                    getOptionLabel={(option) => { this.state.task.dependency = option.id; return option.name; }}
+                    filterOptions={filterOptions}
+                    renderInput={(params) => <TextField {...params} label="" variant="outlined" />}
+                  />
                 </Grid> 
                 <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit} >
                     Editar Tarefa

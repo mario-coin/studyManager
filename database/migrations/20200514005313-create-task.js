@@ -33,6 +33,9 @@ module.exports = {
         type: Sequelize.ENUM('pendente', 'desenvolvendo', 'concluido'),
         defaultValue: 'pendente'
       },
+      dependency: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
