@@ -154,19 +154,7 @@ class Header extends React.Component{
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
               Study Manager
             </Typography>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <InputBase placeholder="Search…" classes={{ root: classes.inputRoot, input: classes.inputInput }} inputProps={{ 'aria-label': 'search' }} />
-            </div>
-            <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              <IconButton aria-label="show 4 new mails" color="inherit">
-                <Badge badgeContent={4} color="secondary">
-                  <Chat />
-                </Badge>
-              </IconButton>
               <IconButton color="inherit">
                 <Notification />
               </IconButton>
