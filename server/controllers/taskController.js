@@ -90,6 +90,27 @@ router.get('/edit/:id', async (req, res) => {
   }catch(err){
     return res.status(400).json("Cannot get");
   }
-})
+});
+
+router.get("/autocomplete", async (req, res) => {
+  // const { filter, order, orderBy, rowsPerPage, page } = req.query;
+
+  // console.log('########################################################');
+  // console.log('----------------------------------->', req.query);
+
+  try {
+    let tasks = await Task.findAll({
+      attributes: ['id', 'name'],
+      order: [
+        ['name', 'ASC']
+      ]
+    });
+    
+    return res.status(200).json({ tasks });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json("Task autocomplete failed");
+  }
+});
 
 module.exports = router;

@@ -8,11 +8,12 @@
 5.      abrir terminal
 6.      > npm install --save-dev sequelize-cli
 7.      > npx sequelize-cli db:migrate
-8.      > npm install
-9.      > cd client
-10.     > npm install
-11.     > cd ..
-12.     > npm run dev
+8.      > npx sequelize-cli db:seed:all
+9.      > npm install
+10.     > cd client
+11.     > npm install
+12.     > cd ..
+13.     > npm run dev
 ########################
 ########################
 

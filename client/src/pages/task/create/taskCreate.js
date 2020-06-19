@@ -21,7 +21,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import api from '../../../services/api'
-
+import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 
 const styles = (theme) => ({
   root: {
@@ -73,9 +73,24 @@ class TaskCreate extends React.Component {
             deadline: '',
             duration: '',
             type: '',
+            dependency: '',
         },
-        snackbarMessage: ''
+        snackbarMessage: '',
+        autocomplete: []
       }
+  }
+  
+  componentDidMount() {
+    api.get("/api/task/autocomplete", {})
+    .then(
+      (response) => {
+        console.log(response.data);
+        this.setState({'autocomplete': response.data.tasks });
+      },
+      (error) => {
+        this.setState({'snackbarMessage': error.response.data });
+      }
+    );
   }
 
   async submit(event) {
@@ -121,7 +136,12 @@ class TaskCreate extends React.Component {
 
   render(){
     const { classes } = this.props;
-  
+    
+    const filterOptions = createFilterOptions({
+      matchFrom: 'start',
+      stringify: (option) => option.name,
+    });
+    
     return (
       <div className={classes.root}>
         <Header />
@@ -218,20 +238,31 @@ class TaskCreate extends React.Component {
                   onChange={this.handleChange}/>
                 </Grid>
                 <Grid item xs={6}>
-                <InputLabel>Tipo</InputLabel>
-                <Select
-                  name="type"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="type"
-                  autoFocus
-                  onChange={this.handleChange}
-                >
-                    <MenuItem value={'atividade'}>Atividade</MenuItem>
-                    <MenuItem value={'trabalho'}>Trabalho</MenuItem>
-                    <MenuItem value={'prova'}>Prova</MenuItem>
-                </Select>
+                  <InputLabel>Tipo</InputLabel>
+                  <Select
+                    name="type"
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="type"
+                    autoFocus
+                    onChange={this.handleChange}
+                  >
+                      <MenuItem value={'atividade'}>Atividade</MenuItem>
+                      <MenuItem value={'trabalho'}>Trabalho</MenuItem>
+                      <MenuItem value={'prova'}>Prova</MenuItem>
+                  </Select>
+                </Grid> 
+                <Grid item xs={6}>
+                  <InputLabel>Dependência</InputLabel>
+                  <Autocomplete
+                    id="filter-demo"
+                    fullWidth
+                    options={this.state.autocomplete}
+                    getOptionLabel={(option) => { this.state.task.dependency = option.id; return option.name; }}
+                    filterOptions={filterOptions}
+                    renderInput={(params) => <TextField {...params} label="" variant="outlined" />}
+                  />
                 </Grid> 
                 <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit} >
                     Criar Tarefa

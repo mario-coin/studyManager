@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     duration: DataTypes.INTEGER,
     type: DataTypes.ENUM('prova', 'trabalho', 'atividade'),
     situation: DataTypes.ENUM('pendente', 'desenvolvendo', 'concluido'),
+    dependency: DataTypes.INTEGER,
     id_user: DataTypes.INTEGER,
   }, {});
   Task.associate = function(models) {
