@@ -22,6 +22,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
+import api from '../../../services/api';
 
 
 const styles = (theme) => ({
@@ -63,6 +64,26 @@ class UserIndex extends React.Component {
       super(props);
 
       this.createData = this.createData.bind(this);
+      this.state = {
+        user: [],
+      }
+  }
+
+  componentDidMount() {
+    this.loadUserLogged();
+  }
+
+  loadUserLogged = () => {
+    api.get("/api/user/editProfile")
+    .then(
+      (response) => {
+        this.setState({'user': response.data.user });
+        console.log(response);
+      },
+      (error) => {
+        this.setState({'snackbarMessage': error.response.data });
+      }
+    );
   }
 
   createData(name, calories, fat, carbs, protein) {

@@ -90,6 +90,16 @@ class TaskCreate extends React.Component {
               this.setState({'snackbarMessage': error.response.data });
           }
       );
+
+      api.post("/api/notification/create", this.state.task)
+      .then(
+        (response) =>{
+          this.props.history.push("/task");
+        },
+        (error) => {
+          this.setState({'snackbarMessage': error.response.data });
+        }
+      )
   }
 
   handleChange = (event) => {

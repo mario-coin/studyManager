@@ -18,7 +18,8 @@ import Drawer from '@material-ui/core/Drawer';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
-import Notification from '../template/notification'
+import Notification from '../template/notification';
+import UserConfigMenu from '../template/userConfigMenu'
 
 const drawerWidth = 240;
 
@@ -125,6 +126,8 @@ class Header extends React.Component{
 
       this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
       this.handleDrawerClose = this.handleDrawerClose.bind(this);
+      this.handleDrawerOpenRight = this.handleDrawerOpenRight.bind(this);
+      this.handleDrawerCloseRight = this.handleDrawerCloseRight.bind(this);
 
       this.state = {
           open: false
@@ -136,6 +139,14 @@ class Header extends React.Component{
   };
 
   handleDrawerClose = () => {
+    this.setState({'open': false });
+  };
+
+  handleDrawerOpenRight = () => {
+    this.setState({'open': true });
+  };
+
+  handleDrawerCloseRight = () => {
     this.setState({'open': false });
   };
 
@@ -154,26 +165,14 @@ class Header extends React.Component{
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
               Study Manager
             </Typography>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <InputBase placeholder="Search…" classes={{ root: classes.inputRoot, input: classes.inputInput }} inputProps={{ 'aria-label': 'search' }} />
-            </div>
-            <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              <IconButton aria-label="show 4 new mails" color="inherit">
-                <Badge badgeContent={4} color="secondary">
-                  <Chat />
-                </Badge>
-              </IconButton>
               <IconButton color="inherit">
                 <Notification />
               </IconButton>
               <IconButton edge="end" aria-label="account of current user" aria-controls={menuId} aria-haspopup="true"
                 // onClick={handleProfileMenuOpen}
                 color="inherit" >
-                <AccountCircle />
+                <UserConfigMenu />
               </IconButton>
             </div>
           </Toolbar>
@@ -191,6 +190,7 @@ class Header extends React.Component{
           <Divider />
           <List>{adminListItems}</List>
         </Drawer>
+        
       </div>
     );
   }
