@@ -23,6 +23,9 @@ module.exports = {
       id_user:{
         type: Sequelize.INTEGER
       },
+      id_task:{
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
