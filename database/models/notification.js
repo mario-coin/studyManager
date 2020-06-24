@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     type: DataTypes.ENUM('prova', 'trabalho', 'atividade'),
     id_user: DataTypes.INTEGER,
     id_task: DataTypes.INTEGER,
+    deadline: DataTypes.DATE,
   }, {});
   Notification.associate = function(models) {
     // associations can be defined here

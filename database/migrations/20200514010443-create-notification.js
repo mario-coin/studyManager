@@ -20,6 +20,9 @@ module.exports = {
       type: {
         type: Sequelize.ENUM('prova', 'trabalho', 'atividade')
       },
+      deadline: {
+        type: Sequelize.DATE
+      },
       id_user:{
         type: Sequelize.INTEGER
       },

@@ -114,7 +114,15 @@ class TaskEdit extends React.Component {
       api.put(`/api${this.props.location.pathname}`, this.state.task)
       .then(
           (response) => {
-              this.props.history.push("/task");
+              api.put(`/api/notification/edit/${this.props.match.params.id}`, this.state.task)
+                .then(
+                    (response) =>{
+                        this.props.history.push("/task");
+                    },
+                    (error) => {
+                        this.setState({'snackbarMessage': error.response.data });
+                    }
+                )
           },
           (error) => {
               this.setState({'snackbarMessage': error.response.data });
@@ -192,7 +200,8 @@ class TaskEdit extends React.Component {
                 <TextField 
                   autoComplete="start"
                   name="start_date"
-                  value={moment(this.state.task.start_date).tz("America/Sao_Paulo").format("DD/MM/YYYY HH:MM:SS")}
+                  type="datetime-local"
+                  value={this.state.task.start_date}
                   variant="outlined"
                   required
                   fullWidth
@@ -206,7 +215,8 @@ class TaskEdit extends React.Component {
                 <TextField
                   autoComplete="deadline"
                   name="deadline"
-                  value={moment(this.state.task.deadline).tz("America/Sao_Paulo").format("DD/MM/YYYY HH:MM:SS")}
+                  type="datetime-local"
+                  value={this.state.task.deadline}
                   variant="outlined"
                   required
                   fullWidth
