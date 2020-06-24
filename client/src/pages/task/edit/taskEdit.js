@@ -110,7 +110,15 @@ class TaskEdit extends React.Component {
       api.put(`/api${this.props.location.pathname}`, this.state.task)
       .then(
           (response) => {
-              this.props.history.push("/task");
+              api.put(`/api/notification/edit/${this.props.match.params.id}`, this.state.task)
+                .then(
+                    (response) =>{
+                        this.props.history.push("/task");
+                    },
+                    (error) => {
+                        this.setState({'snackbarMessage': error.response.data });
+                    }
+                )
           },
           (error) => {
               this.setState({'snackbarMessage': error.response.data });

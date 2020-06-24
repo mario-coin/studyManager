@@ -9,6 +9,8 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
+import moment from "moment";
+import "moment-timezone";
 
 import api from '../services/api';
 
@@ -89,6 +91,7 @@ class Notification extends React.Component {
               <Typography className={classes.typography}>Tarefa: {notification.title}</Typography>
               <Typography className={classes.typography}>Descrição: {notification.description}</Typography>
               <Typography className={classes.typography}>Tipo: {notification.type}</Typography>
+              <Typography className={classes.typography}>Data de entrega: {moment(notification.deadline).tz("America/Sao_Paulo").format("DD/MM/YYYY HH:MM:SS")}</Typography>
               <Divider />
             </React.Fragment>
             ))}

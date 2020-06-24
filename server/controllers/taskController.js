@@ -155,4 +155,50 @@ router.get("/gantt", async (req, res) => {
   }
 });
 
+router.put("/configTask", async (req, res) => {
+  try{
+    let authHeader = req.headers.authorization;
+    const [scheme, token] = authHeader.split(" ");
+    const decoded = await promisify(jwt.verify)(token, "secret");
+    req.body.id_user = decoded.id;
+    const { durationAtividade, durationTrabalho, durationProva } = req.body;
+    if(durationAtividade !== ""){
+      Task.update(
+        {
+          duration: durationAtividade
+        }, {
+          where: {
+            type: 'atividade',
+            id_user: req.body.id_user
+          }
+        })
+    }
+    if(durationTrabalho !== ""){
+      Task.update(
+        {
+          duration: durationTrabalho
+        }, {
+          where: {
+            type: 'trabalho',
+            id_user: req.body.id_user
+          }
+        })
+    }
+    if(durationProva !== ""){
+      Task.update(
+        {
+          duration: durationProva
+        }, {
+          where: {
+            type: 'prova',
+            id_user: req.body.id_user
+          }
+        })
+    }
+    return res.status(200).json("Duration has been updated");
+  }catch(err){
+    return res.status(400).json("The configuration of durations have not been saved")
+  }
+})
+
 module.exports = router;

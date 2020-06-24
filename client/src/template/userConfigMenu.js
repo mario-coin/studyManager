@@ -79,7 +79,7 @@ class UserConfigMenu extends React.Component {
                   <ListItemText primary="Alterar senha" />
                 </ListItemLink>
                 <Divider/>
-                <ListItemLink button href="#">
+                <ListItemLink button href="/task/configTask">
                   <ListItemIcon>
                     <SettingsIcon />
                   </ListItemIcon>
