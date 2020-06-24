@@ -71,13 +71,13 @@ class Gantt extends React.Component {
     }
 
     ganttClick = (task) => {
-        console.log("click");
-        console.log(task);
+        // console.log("click");
+        // console.log(task);
     }
 
     ganttDateChange = (task, start, end) => {
-        console.log("date change");
-        console.log(task, start, end)
+        // console.log("date change");
+        // console.log(task, start, end)
     }
 
     // ganttProgressChange = (task, progress) => {
@@ -86,8 +86,8 @@ class Gantt extends React.Component {
     // }
 
     ganttTasksChange = (tasks) => {
-        console.log("tasks change");
-        console.log(tasks)
+        // console.log("tasks change");
+        // console.log(tasks)
     }
     
     render(){
