@@ -65,4 +65,17 @@ router.put("/edit/:id", async (req,res) => {
   }
 });
 
+router.put("/delete/:id", async (req,res) => {
+  try{
+    const notification = await Notification.findOne({
+      where: { id_task: req.params.id}
+    })
+    await notification.destroy(req.params.id);
+    return res.status(200).json("Notification deleted");
+  }catch(err){
+    return res.status(400).json("Notification not deleted");
+  }
+});
+
+
 module.exports = router;
