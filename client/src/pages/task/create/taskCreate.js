@@ -87,7 +87,6 @@ class TaskCreate extends React.Component {
     api.get("/api/task/autocomplete", {})
     .then(
       (response) => {
-        console.log(response.data);
         this.setState({'autocomplete': response.data.tasks });
       },
       (error) => {
@@ -98,26 +97,23 @@ class TaskCreate extends React.Component {
 
   async submit(event) {
       event.preventDefault();
-      
       api.post("/api/task/create", this.state.task)
       .then(
           (response) => {
-              this.props.history.push("/task");
+              api.post(`/api/notification/create/${response.data}`, this.state.task)
+                .then(
+                    (response) =>{
+                        this.props.history.push("/task");
+                    },
+                    (error) => {
+                        this.setState({'snackbarMessage': error.response.data });
+                    }
+                )
           },
           (error) => {
               this.setState({'snackbarMessage': error.response.data });
           }
-      );
-
-      api.post("/api/notification/create", this.state.task)
-      .then(
-        (response) =>{
-          this.props.history.push("/task");
-        },
-        (error) => {
-          this.setState({'snackbarMessage': error.response.data });
-        }
-      )
+      );      
   }
 
   handleChange = (event) => {
