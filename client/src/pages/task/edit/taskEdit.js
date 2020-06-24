@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import { withRouter} from 'react-router-dom';
 import { fade, withStyles } from '@material-ui/core/styles';
 import Header from '../../../template/header';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -110,7 +111,8 @@ class TaskEdit extends React.Component {
       api.put(`/api${this.props.location.pathname}`, this.state.task)
       .then(
           (response) => {
-              api.put(`/api/notification/edit/${this.props.match.params.id}`, this.state.task)
+              // api.put(`/api/notification/edit/${this.props.match.params.id}`, this.state.task)
+              api.put(`/api${this.props.location.pathname}`, this.state.task)
                 .then(
                     (response) =>{
                         this.props.history.push("/task");
@@ -237,4 +239,4 @@ class TaskEdit extends React.Component {
   }
 }
 
-export default withStyles(styles)(TaskEdit);
+export default withStyles(styles)(withRouter(TaskEdit));
