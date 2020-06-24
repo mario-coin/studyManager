@@ -15,9 +15,8 @@ import api from '../services/api';
 const styles = (theme) => ({
   typography: {
     padding: theme.spacing(1),
-  },
+  }
 });
-
 
 class Notification extends React.Component {
   constructor(props) {
@@ -60,12 +59,22 @@ class Notification extends React.Component {
     );
   }
 
+  findNotificationsNotViewed(){
+    const notViewed = [];
+    for(var i = 0; i < this.state.notifications.length; i++){
+      if(this.state.notifications[i].viewed === false){
+        notViewed.push(this.state.notifications[i]);
+      }
+    }
+    return notViewed;
+  }
+
   render() {    
     const { classes } = this.props;
     return (
       <div>
           <IconButton aria-label="show 17 new notifications" color="inherit" onClick={this.handleRequestOpen.bind(this)}>
-            <Badge badgeContent={17} color="secondary">
+            <Badge badgeContent={this.findNotificationsNotViewed().length} color="secondary">
                 <NotificationsIcon />
             </Badge>
           </IconButton>

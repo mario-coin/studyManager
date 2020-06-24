@@ -52,7 +52,7 @@ router.post('/create',async (req,res) => {
 
   try {
     task = await Task.create(req.body);
-    return res.status(200).json();
+    return res.status(200).json(task.id);
 
   } catch (err) {
     return res.status(400).json("Task registration failed");

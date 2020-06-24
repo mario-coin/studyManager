@@ -21,6 +21,7 @@ import api from '../../../services/api'
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import moment from "moment";
 import "moment-timezone";
+import FormControl from '@material-ui/core/FormControl';
 
 
 const styles = (theme) => ({
@@ -54,6 +55,9 @@ const styles = (theme) => ({
     width: 250,
     margin: theme.spacing(1),
     float: 'left'
+  },
+  formControl: {
+    display: 'flex',
   }
 });
 
@@ -166,8 +170,8 @@ class TaskEdit extends React.Component {
                   autoComplete="name"
                   name="name"
                   value={this.state.task.name}
-                  variant="outlined"
                   required
+                  variant="outlined"
                   fullWidth
                   id="name"
                   label="Nome"
@@ -179,8 +183,8 @@ class TaskEdit extends React.Component {
                   autoComplete="desc"
                   name="description"
                   value={this.state.task.description}
-                  variant="outlined"
                   required
+                  variant="outlined"
                   fullWidth
                   id="description"
                   label="Descrição"
@@ -192,8 +196,8 @@ class TaskEdit extends React.Component {
                   autoComplete="start"
                   name="start_date"
                   value={moment(this.state.task.start_date).tz("America/Sao_Paulo").format("DD/MM/YYYY HH:MM:SS")}
-                  variant="outlined"
                   required
+                  variant="outlined"
                   fullWidth
                   id="start_date"
                   label="Data Inicio"
@@ -206,8 +210,8 @@ class TaskEdit extends React.Component {
                   autoComplete="deadline"
                   name="deadline"
                   value={moment(this.state.task.deadline).tz("America/Sao_Paulo").format("DD/MM/YYYY HH:MM:SS")}
-                  variant="outlined"
                   required
+                  variant="outlined"
                   fullWidth
                   id="deadline"
                   label="Deadline"
@@ -216,27 +220,31 @@ class TaskEdit extends React.Component {
                   InputLabelProps={{ shrink: true}}/>
                 </Grid>
                 <Grid item xs={6}>
+                <FormControl className={classes.formControl}>
+                <InputLabel style={{marginLeft: 15}} required>Complexidade</InputLabel>
                 <Select
                   name="complexity"
                   value={this.state.task.complexity}
-                  variant="outlined"
                   required
+                  variant="outlined"
                   fullWidth
                   id="complexity"
-                  autoFocus onChange={this.myChangeHandler}
+                  autoFocus 
+                  onChange={this.myChangeHandler}
                 >
                     <MenuItem value={'facil'}>Fácil</MenuItem>
                     <MenuItem value={'mediano'}>Mediano</MenuItem>
                     <MenuItem value={'dificil'}>Difícil</MenuItem>
                 </Select>
+                </FormControl>
                 </Grid>
                 <Grid item xs={6}>
                 <TextField
                   autoComplete="duration"
                   name="duration"
                   value={this.state.task.duration}
-                  variant="outlined"
                   required
+                  variant="outlined"
                   fullWidth
                   id="duration"
                   label="Duração"
@@ -244,12 +252,13 @@ class TaskEdit extends React.Component {
                   onChange={this.myChangeHandler}/>
                 </Grid>
                 <Grid item xs={6}>
-                <InputLabel>Tipo</InputLabel>
+                <FormControl className={classes.formControl}>
+                <InputLabel style={{marginLeft: 15}} required>Tipo</InputLabel>
                 <Select
                   name="type"
                   value={this.state.task.type}
-                  variant="outlined"
                   required
+                  variant="outlined"
                   fullWidth
                   id="type"
                   autoFocus onChange={this.myChangeHandler}
@@ -258,9 +267,11 @@ class TaskEdit extends React.Component {
                     <MenuItem value={'trabalho'}>Trabalho</MenuItem>
                     <MenuItem value={'prova'}>Prova</MenuItem>
                 </Select>
+                </FormControl>
                 </Grid> 
                 <Grid item xs={6}>
-                  <InputLabel>Dependência</InputLabel>
+                <FormControl className={classes.formControl}>
+                  <InputLabel style={{marginLeft: 15}}>Dependência</InputLabel>
                   <Autocomplete
                     id="filter-demo"
                     fullWidth
@@ -282,6 +293,7 @@ class TaskEdit extends React.Component {
 
                     // defaultValue={this.state.autocomplete.find(f => f.id == this.state.task.dependency)?.name ?? ""}
                   />
+                  </FormControl>
                 </Grid> 
                 <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit} >
                     Editar Tarefa

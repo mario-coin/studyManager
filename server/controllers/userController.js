@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const authMiddleware = require("../middlewares/auth");
 const crypto = require('crypto');
+const jwt = require("jsonwebtoken");
+const { promisify } = require("util");
 const { User } = require('../../database/models');
 const mailer = require('../modules/mailer');
 
@@ -131,13 +133,36 @@ router.get("/getAll", async (req, res) => {
   }
 });
 
-router.get("/get", async (req, res) => {
+router.get("/editProfile", async (req, res) => {
   try {
-    const { id } = req;
+    let authHeader = req.headers.authorization;
+    console.log(req.headers.authorization)
+    const [scheme, token] = authHeader.split(" ");
+    const decoded = await promisify(jwt.verify)(token, "secret");
+    
+    const id = decoded.id;
+    const user = await User.findByPk(id);
+    console.log(user);
+    return res.status(200).json({ user });
+  } catch (err) {
+    return res.status(400).json("Can't get user information");
+  }
+});
 
-    const user = await User.findById(id);
-
-    return res.json({ user });
+router.put("/editProfile", async (req, res) => {
+  try {
+    const { id, email } = req.body
+    const user = await User.findByPk(id);
+    if(email !== user.email){
+      const userExists = await User.findOne({
+        where: {email},
+      });
+      if(userExists){
+        return res.status(400).json("Email already exists");
+      }
+    }
+    await user.update(req.body);
+    return res.status(200).json("User updated");
   } catch (err) {
     return res.status(400).json("Can't get user information");
   }

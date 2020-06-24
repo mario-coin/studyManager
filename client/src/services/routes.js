@@ -56,7 +56,7 @@ const Routes = () => (
 
         {/* Usuário */}
         <PrivateRoute path="/user/create" component={() => <UserCreate /> }/>
-        <PrivateRoute path="/user/edit" component={() => <UserEdit /> }/>
+        <PrivateRoute path="/user/editProfile" component={() => <UserEdit /> }/>
         <PrivateRoute path="/user/delete" component={() => <UserDelete /> }/>
         <PrivateRoute path="/user/" component={() => <UserIndex /> }/>
         {/* Tarefa */}
