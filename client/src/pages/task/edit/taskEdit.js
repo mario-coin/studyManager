@@ -81,19 +81,6 @@ class TaskEdit extends React.Component {
   }
   
   componentDidMount() {
-    api.get("/api/task/autocomplete", {})
-    .then(
-      (response) => {
-        console.log(response.data);
-        this.setState({'autocomplete': response.data.tasks });
-      },
-      (error) => {
-        this.setState({'snackbarMessage': error.response.data });
-      }
-    );
-  }
-
-  componentDidMount() {
     this.loadTask();
   }
 
@@ -102,6 +89,18 @@ class TaskEdit extends React.Component {
     .then(
       (response) => {
         this.setState({'task': response.data.task });
+      },
+      (error) => {
+        this.setState({'snackbarMessage': error.response.data });
+      }
+    );
+
+    let paths = this.props.location.pathname.split('/');
+    api.get("/api/task/autocomplete", { params: {id: paths[paths.length -1]}})
+    .then(
+      (response) => {
+        console.log(response.data);
+        this.setState({'autocomplete': response.data.tasks });
       },
       (error) => {
         this.setState({'snackbarMessage': error.response.data });
@@ -266,9 +265,22 @@ class TaskEdit extends React.Component {
                     id="filter-demo"
                     fullWidth
                     options={this.state.autocomplete}
+
                     getOptionLabel={(option) => { this.state.task.dependency = option.id; return option.name; }}
                     filterOptions={filterOptions}
+                    
+                    // value={this.state.autocomplete_value}
+                    // onChange={(event, newValue) => {
+                    //   this.state.autocomplete_value = newValue;
+                    // }}
+                    // inputValue={this.state.autocomplete_input_value}
+                    // onInputChange={(event, newInputValue) => {
+                    //   this.state.autocomplete_input_value = newInputValue;
+                    // }}
+
                     renderInput={(params) => <TextField {...params} label="" variant="outlined" />}
+
+                    // defaultValue={this.state.autocomplete.find(f => f.id == this.state.task.dependency)?.name ?? ""}
                   />
                 </Grid> 
                 <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit} >

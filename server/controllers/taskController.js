@@ -93,14 +93,56 @@ router.get('/edit/:id', async (req, res) => {
 });
 
 router.get("/autocomplete", async (req, res) => {
-  // const { filter, order, orderBy, rowsPerPage, page } = req.query;
+  const {id} = req.query;
 
   // console.log('########################################################');
   // console.log('----------------------------------->', req.query);
 
+  let authHeader = req.headers.authorization;
+  const [scheme, token] = authHeader.split(" ");
+  const decoded = await promisify(jwt.verify)(token, "secret");
+  let id_user = decoded.id;
+
   try {
     let tasks = await Task.findAll({
       attributes: ['id', 'name'],
+      where: {
+        id_user: id_user,
+        [Op.not]: {
+          id: id
+        }
+      },
+      order: [
+        ['name', 'ASC']
+      ]
+    });
+    
+    return res.status(200).json({ tasks });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json("Task autocomplete failed");
+  }
+});
+
+router.get("/gantt", async (req, res) => {
+  const {id} = req.query;
+
+  // console.log('########################################################');
+  // console.log('----------------------------------->', req.query);
+
+  let authHeader = req.headers.authorization;
+  const [scheme, token] = authHeader.split(" ");
+  const decoded = await promisify(jwt.verify)(token, "secret");
+  let id_user = decoded.id;
+
+  try {
+    let tasks = await Task.findAll({
+      where: {
+        id_user: id_user,
+        [Op.not]: {
+          id: id
+        }
+      },
       order: [
         ['name', 'ASC']
       ]

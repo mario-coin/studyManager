@@ -81,7 +81,7 @@ class TaskCreate extends React.Component {
   }
   
   componentDidMount() {
-    api.get("/api/task/autocomplete", {})
+    api.get("/api/task/autocomplete", { params: {id: 0}})
     .then(
       (response) => {
         console.log(response.data);
