@@ -18,7 +18,6 @@ import { TextField, MenuItem } from '@material-ui/core';
 import { Select } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import api from '../../../services/api'
-import { Redirect } from 'react-router-dom';
 
 const styles = (theme) => ({
   root: {
@@ -51,7 +50,7 @@ const styles = (theme) => ({
     width: 250,
     margin: theme.spacing(1),
     float: 'left'
-  },
+  }
 });
 
 class TaskDelete extends React.Component {
@@ -59,6 +58,7 @@ class TaskDelete extends React.Component {
     super(props);
     this.submit = this.submit.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
+    this.routeChange = this.routeChange.bind(this);
 
     this.state = {
       task: {
@@ -101,6 +101,11 @@ class TaskDelete extends React.Component {
     )
   }
 
+  routeChange() {
+    let path = `/task`;
+    this.props.history.push(path);
+  }
+
   render(){
     const { classes } = this.props;
   
@@ -115,8 +120,10 @@ class TaskDelete extends React.Component {
             <Grid container justify="center">
               <Grid item xs={12}>
                 <Paper align="center" className={classes.paper}>Tem certeza que deseja deletar a tarefa?</Paper>
-                <button onClick={this.deleteTask}>Confirmar</button>
-                <button Redirect to={`/task/`}>Cancelar</button>
+                <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                  <button onClick={this.deleteTask} style={{alignSelf:'center'}}>Confirmar</button>
+                  <button onClick={this.routeChange} style={{alignSelf:'center'}}>Cancelar</button>
+                </div>
               </Grid>
             </Grid>
           </Grid>
