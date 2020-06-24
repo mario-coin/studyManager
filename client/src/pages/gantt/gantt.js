@@ -4,6 +4,9 @@ import Header from '../../template/header';
 import Grid from '@material-ui/core/Grid';
 import Footer from '../../template/footer'
 import { FrappeGantt } from 'frappe-gantt-react';
+import api from '../../services/api';
+import moment from "moment";
+import "moment-timezone";
 
 const styles = (theme) => ({
   root: {
@@ -22,12 +25,49 @@ class Gantt extends React.Component {
         super(props);
         this.ganttClick = this.ganttClick.bind(this);
         this.ganttDateChange = this.ganttDateChange.bind(this);
-        this.ganttProgressChange = this.ganttProgressChange.bind(this);
+        // this.ganttProgressChange = this.ganttProgressChange.bind(this);
         this.ganttTasksChange = this.ganttTasksChange.bind(this);
+        this.fetchTasks = this.fetchTasks.bind(this);
 
         this.state = {
-            open: false
+            open: false,
+            tasks: [
+                {
+                    id: '',
+                    name: '',
+                    start: '2016-12-28',
+                    end: '2016-12-28',
+                },
+            ]
         };
+    }
+    
+    componentDidMount() {
+        this.fetchTasks();
+    }
+    
+    fetchTasks = () => {
+        let obj = [];
+        api.get("/api/task/gantt", { params: {id: 0}})
+        .then(
+            (response) => {
+                // console.log(response.data);
+                response.data.tasks.forEach(o => {
+                    obj.push({
+                        id: `${o.id}`,
+                        name: o.name,
+                        start: moment(o.start_date).tz("America/Sao_Paulo").format("YYYY-MM-DD HH:MM:SS"),
+                        end: moment(moment(o.start_date).toDate().getTime() + (o.duration*60*60*1000)).tz("America/Sao_Paulo").format("YYYY-MM-DD HH:MM:SS"),
+                        dependencies: `${o.dependency}`,
+                    });
+                });
+                // console.log(obj);
+                this.setState({'tasks': obj });
+            },
+            (error) => {
+                this.setState({'snackbarMessage': error.response.data });
+            }
+        );
     }
 
     ganttClick = (task) => {
@@ -40,10 +80,10 @@ class Gantt extends React.Component {
         console.log(task, start, end)
     }
 
-    ganttProgressChange = (task, progress) => {
-        console.log("progress change");
-        console.log(task, progress)
-    }
+    // ganttProgressChange = (task, progress) => {
+    //     console.log("progress change");
+    //     console.log(task, progress)
+    // }
 
     ganttTasksChange = (tasks) => {
         console.log("tasks change");
@@ -52,214 +92,7 @@ class Gantt extends React.Component {
     
     render(){
         const { classes } = this.props;
-        const tasks = [
-            {
-            id: 'Task 1',
-            name: 'Redesign website1',
-            start: '2016-12-28',
-            end: '2016-12-31',
-            progress: 80,
-            },
-            {
-            id: 'Task 2',
-            name: 'Redesign website2',
-            start: '2017-01-04',
-            end: '2017-01-07',
-            progress: 40,
-            dependencies: 'Task 1'
-            },
-            {
-            id: 'Task 3',
-            name: 'Redesign website3',
-            start: '2017-01-08',
-            end: '2017-01-12',
-            progress: 20,
-            dependencies: 'Task 1, Task 2'
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-            {
-            id: 'Task 4',
-            name: 'Redesign website',
-            start: '2016-12-30',
-            end: '2017-01-08',
-            progress: 20,
-            },
-        ]
-    
+
         return (
         <div className={classes.root}>
             <Header />
@@ -271,11 +104,11 @@ class Gantt extends React.Component {
                 <Grid container justify="center">
                 <Grid item xs={12}>
                     <FrappeGantt
-                        tasks={tasks}
+                        tasks={this.state.tasks}
                         viewMode={'Day'}
                         onClick={this.ganttClick}
                         onDateChange={this.ganttDateChange}
-                        onProgressChange={this.ganttProgressChange}
+                        // onProgressChange={this.ganttProgressChange}
                         onTasksChange={this.ganttTasksChange}
                         />
                 </Grid>
