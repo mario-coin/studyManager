@@ -92,7 +92,7 @@ router.get('/edit/:id', async (req, res) => {
   }
 });
 
-router.get("/autocomplete", async (req, res) => {
+router.get("/dependency", async (req, res) => {
   const {id} = req.query;
 
   // console.log('########################################################');

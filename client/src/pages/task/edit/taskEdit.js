@@ -3,12 +3,7 @@ import clsx from 'clsx';
 import { fade, withStyles } from '@material-ui/core/styles';
 import Header from '../../../template/header';
 import Snackbar from '@material-ui/core/Snackbar';
-import Chat from '@material-ui/icons/Chat';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import Card from '@material-ui/core/Card';
 import CloseIcon from '@material-ui/icons/Close';
-import CardActions from '@material-ui/core/CardActions';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -18,11 +13,9 @@ import { TextField, MenuItem } from '@material-ui/core';
 import { Select } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import api from '../../../services/api'
-import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import moment from "moment";
 import "moment-timezone";
 import FormControl from '@material-ui/core/FormControl';
-
 
 const styles = (theme) => ({
   root: {
@@ -80,7 +73,7 @@ class TaskEdit extends React.Component {
             dependency: '',
         },
         snackbarMessage: '',
-        autocomplete: []
+        dependencies: []
       }
   }
   
@@ -100,14 +93,14 @@ class TaskEdit extends React.Component {
     );
 
     let paths = this.props.location.pathname.split('/');
-    api.get("/api/task/autocomplete", { params: {id: paths[paths.length -1]}})
+    api.get("/api/task/dependency", { params: {id: paths[paths.length -1]}})
     .then(
       (response) => {
         console.log(response.data);
-        this.setState({'autocomplete': response.data.tasks });
+        this.setState({'dependencies': response.data.tasks });
       },
       (error) => {
-        this.setState({'snackbarMessage': error.response.data });
+        this.setState({'dependencies': error.response.data });
       }
     );
   }
@@ -146,11 +139,6 @@ class TaskEdit extends React.Component {
     const { classes } = this.props;
     const current_page = this.props.history;
     
-    const filterOptions = createFilterOptions({
-      matchFrom: 'start',
-      stringify: (option) => option.name,
-    });
-    
     return (
       <div className={classes.root}>
         <Header />
@@ -166,71 +154,21 @@ class TaskEdit extends React.Component {
               <form className={classes.paper} onSubmit={this.submit}>
               <Grid container spacing={1}>
                 <Grid item xs={6}>
-                <TextField
-                  autoComplete="name"
-                  name="name"
-                  value={this.state.task.name}
-                  required
-                  variant="outlined"
-                  fullWidth
-                  id="name"
-                  label="Nome"
-                  autoFocus
-                  onChange={this.myChangeHandler}/>
+                <TextField autoComplete="name" name="name" value={this.state.task.name} required variant="outlined" fullWidth id="name" label="Nome" autoFocus onChange={this.myChangeHandler}/>
                 </Grid>
                 <Grid item xs={6}>
-                <TextField 
-                  autoComplete="desc"
-                  name="description"
-                  value={this.state.task.description}
-                  required
-                  variant="outlined"
-                  fullWidth
-                  id="description"
-                  label="Descrição"
-                  autoFocus
-                  onChange={this.myChangeHandler}/>
+                <TextField autoComplete="desc" name="description" value={this.state.task.description} required variant="outlined" fullWidth id="description" label="Descrição" autoFocus onChange={this.myChangeHandler}/>
                 </Grid>
                 <Grid item xs={6}>
-                <TextField 
-                  autoComplete="start"
-                  name="start_date"
-                  value={moment(this.state.task.start_date).tz("America/Sao_Paulo").format("DD/MM/YYYY HH:MM:SS")}
-                  required
-                  variant="outlined"
-                  fullWidth
-                  id="start_date"
-                  label="Data Inicio"
-                  autoFocus
-                  onChange={this.myChangeHandler}
-                  InputLabelProps={{ shrink: true}}/>
+                <TextField autoComplete="start" name="start_date" value={moment(this.state.task.start_date).tz("America/Sao_Paulo").format("DD/MM/YYYY HH:MM:SS")} required variant="outlined" fullWidth id="start_date" label="Data Inicio" autoFocus onChange={this.myChangeHandler} InputLabelProps={{ shrink: true}}/>
                 </Grid>
                 <Grid item xs={6}>
-                <TextField
-                  autoComplete="deadline"
-                  name="deadline"
-                  value={moment(this.state.task.deadline).tz("America/Sao_Paulo").format("DD/MM/YYYY HH:MM:SS")}
-                  required
-                  variant="outlined"
-                  fullWidth
-                  id="deadline"
-                  label="Deadline"
-                  autoFocus
-                  onChange={this.myChangeHandler}
-                  InputLabelProps={{ shrink: true}}/>
+                <TextField autoComplete="deadline" name="deadline" value={moment(this.state.task.deadline).tz("America/Sao_Paulo").format("DD/MM/YYYY HH:MM:SS")} required variant="outlined" fullWidth id="deadline" label="Deadline" autoFocus onChange={this.myChangeHandler} InputLabelProps={{ shrink: true}}/>
                 </Grid>
                 <Grid item xs={6}>
                 <FormControl className={classes.formControl}>
                 <InputLabel style={{marginLeft: 15}} required>Complexidade</InputLabel>
-                <Select
-                  name="complexity"
-                  value={this.state.task.complexity}
-                  required
-                  variant="outlined"
-                  fullWidth
-                  id="complexity"
-                  autoFocus 
-                  onChange={this.myChangeHandler}
+                <Select name="complexity" value={this.state.task.complexity} required variant="outlined" fullWidth id="complexity" autoFocus  onChange={this.myChangeHandler}
                 >
                     <MenuItem value={'facil'}>Fácil</MenuItem>
                     <MenuItem value={'mediano'}>Mediano</MenuItem>
@@ -239,29 +177,12 @@ class TaskEdit extends React.Component {
                 </FormControl>
                 </Grid>
                 <Grid item xs={6}>
-                <TextField
-                  autoComplete="duration"
-                  name="duration"
-                  value={this.state.task.duration}
-                  required
-                  variant="outlined"
-                  fullWidth
-                  id="duration"
-                  label="Duração"
-                  autoFocus
-                  onChange={this.myChangeHandler}/>
+                <TextField autoComplete="duration" name="duration" value={this.state.task.duration} required variant="outlined" fullWidth id="duration" label="Duração" autoFocus onChange={this.myChangeHandler}/>
                 </Grid>
                 <Grid item xs={6}>
                 <FormControl className={classes.formControl}>
                 <InputLabel style={{marginLeft: 15}} required>Tipo</InputLabel>
-                <Select
-                  name="type"
-                  value={this.state.task.type}
-                  required
-                  variant="outlined"
-                  fullWidth
-                  id="type"
-                  autoFocus onChange={this.myChangeHandler}
+                <Select name="type" value={this.state.task.type} required variant="outlined" fullWidth id="type" autoFocus onChange={this.myChangeHandler}
                 >
                     <MenuItem value={'atividade'}>Atividade</MenuItem>
                     <MenuItem value={'trabalho'}>Trabalho</MenuItem>
@@ -272,27 +193,10 @@ class TaskEdit extends React.Component {
                 <Grid item xs={6}>
                 <FormControl className={classes.formControl}>
                   <InputLabel style={{marginLeft: 15}}>Dependência</InputLabel>
-                  <Autocomplete
-                    id="filter-demo"
-                    fullWidth
-                    options={this.state.autocomplete}
-
-                    getOptionLabel={(option) => { this.state.task.dependency = option.id; return option.name; }}
-                    filterOptions={filterOptions}
-                    
-                    // value={this.state.autocomplete_value}
-                    // onChange={(event, newValue) => {
-                    //   this.state.autocomplete_value = newValue;
-                    // }}
-                    // inputValue={this.state.autocomplete_input_value}
-                    // onInputChange={(event, newInputValue) => {
-                    //   this.state.autocomplete_input_value = newInputValue;
-                    // }}
-
-                    renderInput={(params) => <TextField {...params} label="" variant="outlined" />}
-
-                    // defaultValue={this.state.autocomplete.find(f => f.id == this.state.task.dependency)?.name ?? ""}
-                  />
+                  <Select name="dependency" variant="outlined" value={this.state.task.dependency} onChange={this.myChangeHandler}>
+                    <MenuItem value={null}>-</MenuItem>
+                    {this.state.dependencies.map(({ id, name }, index) => <MenuItem value={id}>{name}</MenuItem>)}
+                  </Select>
                   </FormControl>
                 </Grid> 
                 <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit} >
