@@ -65,7 +65,7 @@ router.put("/edit/:id", async (req,res) => {
   }
 });
 
-router.put("/delete/:id", async (req,res) => {
+router.delete("/delete/:id", async (req,res) => {
   try{
     const notification = await Notification.findOne({
       where: { id_task: req.params.id}

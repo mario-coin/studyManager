@@ -80,7 +80,7 @@ class TaskDelete extends React.Component {
     api.delete(`/api${this.props.location.pathname}`, this.state.task)
     .then(
         (response) => {
-          api.put(`/api/notification/delete/${this.props.match.params.id}`, this.state.task)
+          api.delete(`/api/notification/delete/${this.props.match.params.id}`, this.state.task)
           .then(
             (response) =>{
               this.props.history.push("/task");
@@ -101,7 +101,7 @@ class TaskDelete extends React.Component {
     api.delete(`/api${this.props.location.pathname}`, this.state.task)
     .then(
       (response) => {
-        api.put(`/api/notification/delete/${this.props.match.params.id}`, this.state.task)
+        api.delete(`/api/notification/delete/${this.props.match.params.id}`, this.state.task)
           .then(
             (response) =>{
               this.props.history.push("/task");
