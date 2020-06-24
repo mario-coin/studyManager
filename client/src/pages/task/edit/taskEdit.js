@@ -111,8 +111,8 @@ class TaskEdit extends React.Component {
       api.put(`/api${this.props.location.pathname}`, this.state.task)
       .then(
           (response) => {
-              // api.put(`/api/notification/edit/${this.props.match.params.id}`, this.state.task)
-              api.put(`/api${this.props.location.pathname}`, this.state.task)
+              api.put(`/api/notification/edit/${this.props.match.params.id}`, this.state.task)
+              // api.put(`/api${this.props.location.pathname}`, this.state.task)
                 .then(
                     (response) =>{
                         this.props.history.push("/task");
