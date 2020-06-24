@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { fade, withStyles } from '@material-ui/core/styles';
-import { mainListItems, secondaryListItems, adminListItems } from './menuListItems';
+import { mainListItems } from './menuListItems';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -185,10 +185,6 @@ class Header extends React.Component{
           </div>
           <Divider />
           <List>{mainListItems}</List>
-          <Divider />
-          <List>{secondaryListItems}</List>
-          <Divider />
-          <List>{adminListItems}</List>
         </Drawer>
         
       </div>

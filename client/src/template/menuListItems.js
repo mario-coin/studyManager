@@ -46,22 +46,6 @@ export const mainListItems = (
     <Link href="/">
       <ListItem button>
         <ListItemIcon>
-          <CalendarToday />
-        </ListItemIcon>
-        <ListItemText primary="Agenda" />
-      </ListItem>
-    </Link>
-    <Link href="/">
-      <ListItem button>
-        <ListItemIcon>
-          <Cloud />
-        </ListItemIcon>
-        <ListItemText primary="Repositório" />
-      </ListItem>
-    </Link>
-    <Link href="/">
-      <ListItem button>
-        <ListItemIcon>
           <Extension />
         </ListItemIcon>
         <ListItemText primary="Integração" />
@@ -70,40 +54,16 @@ export const mainListItems = (
   </div>
 );
 
-export const secondaryListItems = (
-  <div>
-    <ListSubheader inset>Grupos</ListSubheader>
-    <ListItem button>
-      <ListItemIcon>
-        <Send />
-      </ListItemIcon>
-      <ListItemText primary="Chat 1" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <Send />
-      </ListItemIcon>
-      <ListItemText primary="Chat 2" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <Send />
-      </ListItemIcon>
-      <ListItemText primary="Chat 3" />
-    </ListItem>
-  </div>
-);
-
-export const adminListItems = (
-  <div>
-    <ListSubheader inset>Administração</ListSubheader>
-    <Link href="/user">
-      <ListItem button>
-        <ListItemIcon>
-          <GroupIcon />
-        </ListItemIcon>
-        <ListItemText primary="Usuários" />
-      </ListItem>
-    </Link>
-  </div>
-);
+// export const adminListItems = (
+//   <div>
+//     <ListSubheader inset>Administração</ListSubheader>
+//     <Link href="/user">
+//       <ListItem button>
+//         <ListItemIcon>
+//           <GroupIcon />
+//         </ListItemIcon>
+//         <ListItemText primary="Usuários" />
+//       </ListItem>
+//     </Link>
+//   </div>
+// );
