@@ -1,0 +1,21 @@
+FROM node:14-alpine
+
+RUN apk update && apk add bash
+
+# Create app directory
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+COPY .sequelizerc .sequelizerc
+RUN npm install --save-dev sequelize-cli@6.5.2
+RUN npm install --save-dev mysql2@2.1.0
+RUN npm install --save-dev mariadb@3.0.2
+RUN npm install
+
+COPY ./database ./database
+COPY ./moodle_box ./moodle_box
+
+# Install app dependencies
+WORKDIR /usr/src/app/moodle_box
+
+RUN npm install

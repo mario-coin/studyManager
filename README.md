@@ -1,22 +1,30 @@
-########################
-####para rodar o app####
-########################
-1.      instalar mysql
-2.      validar usuário como sendo root, e sem senha
-3.      criar banco study_manager
-4.      instalar node: https://nodejs.org/en/download/
-5.      abrir terminal
-6.      > npm install --save-dev sequelize-cli
-7.      > npx sequelize-cli db:migrate
-8.      > npx sequelize-cli db:seed:all
-9.      > npm install
-10.     > cd client
-11.     > npm install
-12.     > cd ..
-13.     > npm run dev
-########################
-########################
+# Para rodar o app
 
-Material Design:    https://material-ui.com/getting-started/templates/
-Icons:              https://material.io/resources/icons/?style=baseline
-ORM:                https://sequelize.org/v5/manual/getting-started.html
+1.      rodar ./docker-compose.yml (talvez tenha que rodar de novo o study_manager)
+
+# Para rodar a box de integração com moodle
+
+1.      rodar ./docker-compose.yml
+2.      logar no moodle e entrar em "site  administration"
+3.      pesquisar por "web service"
+4.      habilitar "enablewebservices" e "enablemobilewebservice"
+5.      pesquisar e ir em "Manage tokens"
+6.      criar token vinculado ao user admin, mantendo as demais configurações
+7.      copiar o token criado e usar onde é requerido pelo client
+8.      escolher uma das opções para executar
+    *      rebuildar o container do docker-compose
+    *      > npm run moodle_box
+
+## Links Úteis
+
+```
+Material Design:                https://material-ui.com/getting-started/templates/
+
+Icons:                          https://material.io/resources/icons/?style=baseline
+
+ORM:                            https://sequelize.org/v5/manual/getting-started.html
+
+Moodle Client:                  https://github.com/mudrd8mz/node-moodle-client
+
+Moodle Web Service Requests:    http://localhost/admin/webservice/documentation.php
+```

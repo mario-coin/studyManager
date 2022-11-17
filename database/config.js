@@ -1,7 +1,8 @@
 module.exports = {
   username: 'root',
-  password: '',
+  password: 'root',
   database: 'study_manager',
-  host: '127.0.0.1',
-  dialect: 'mysql',
+  host: 'stdm_mariadb',
+  // host: 'localhost',
+  dialect: 'mariadb',
 }

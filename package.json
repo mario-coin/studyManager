@@ -4,7 +4,10 @@
   "scripts": {
     "client": "cd client && npm start",
     "server": "cd server && set DEBUG=express:* & node server.js",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "docker_server": "cd server && set DEBUG=express:* & node server/server.js",
+    "docker": "concurrently --kill-others-on-fail \"npm run docker_server\" \"npm run client\"",
+    "moodle_box": "cd moodle_box && node index.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

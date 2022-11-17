@@ -1,0 +1,23 @@
+FROM node:14-alpine
+
+RUN apk update && apk add bash
+
+WORKDIR /usr/src/app
+COPY . .
+
+#client
+WORKDIR /usr/src/app/client
+RUN npm install
+RUN npm install --save-dev node-sass@4.14.1
+
+#sequelize
+WORKDIR /usr/src/app
+COPY .sequelizerc .sequelizerc
+RUN npm install --save-dev sequelize-cli@6.5.2
+RUN npm install --save-dev mysql2@2.1.0
+RUN npm install --save-dev mariadb@3.0.2
+
+#server
+RUN npm install
+
+RUN export NODE_OPTIONS=--openssl-legacy-provider

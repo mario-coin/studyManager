@@ -57,7 +57,8 @@ class Gantt extends React.Component {
                         id: `${o.id}`,
                         name: o.name,
                         start: moment(o.start_date).tz("America/Sao_Paulo").format("YYYY-MM-DD HH:MM:SS"),
-                        end: moment(moment(o.start_date).toDate().getTime() + (o.duration*60*60*1000)).tz("America/Sao_Paulo").format("YYYY-MM-DD HH:MM:SS"),
+                        // end: moment(moment(o.start_date).toDate().getTime() + (o.duration*60*60*1000)).tz("America/Sao_Paulo").format("YYYY-MM-DD HH:MM:SS"),
+                        end: moment(o.deadline).tz("America/Sao_Paulo").format("YYYY-MM-DD HH:MM:SS"),
                         dependencies: `${o.dependency}`,
                     });
                 });

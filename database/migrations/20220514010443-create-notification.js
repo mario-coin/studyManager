@@ -1,42 +1,32 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('tasks', {
+    return queryInterface.createTable('Notifications', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      title: {
         type: Sequelize.STRING
       },
       description: {
         type: Sequelize.STRING
       },
-      start_date: {
-        type: Sequelize.DATE
-      },
-      deadline: {
-        type: Sequelize.DATE
-      },
-      complexity: {
-        type: Sequelize.ENUM('facil','mediano','dificil')
-      },
-      duration: {
-        type: Sequelize.INTEGER
+      viewed: {
+        type: Sequelize.BOOLEAN
       },
       type: {
         type: Sequelize.ENUM('prova', 'trabalho', 'atividade')
       },
-      situation: {
-        type: Sequelize.ENUM('pendente', 'desenvolvendo', 'concluido'),
-        defaultValue: 'pendente'
+      deadline: {
+        type: Sequelize.DATE
       },
-      dependency: {
+      id_user:{
         type: Sequelize.INTEGER
       },
-      id_user: {
+      id_task:{
         type: Sequelize.INTEGER
       },
       createdAt: {
@@ -50,6 +40,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('tasks');
+    return queryInterface.dropTable('Notifications');
   }
 };
