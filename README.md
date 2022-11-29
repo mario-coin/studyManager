@@ -1,6 +1,6 @@
 # Para rodar o app
 
-1.      rodar ./docker-compose.yml (talvez tenha que rodar de novo o study_manager)
+1.      rodar ./docker-compose.yml
 
 # Para rodar a box de integração com moodle
 
